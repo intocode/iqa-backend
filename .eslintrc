@@ -4,7 +4,12 @@
     "node": true,
     "es6": true
   },
-  "extends": ["airbnb/base", "prettier"],
+  "extends": [
+    "plugin:promise/recommended",
+    "plugin:node/recommended",
+    "airbnb/base",
+    "prettier"
+  ],
   "rules": {
     "no-underscore-dangle": "off"
   }
