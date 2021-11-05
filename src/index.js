@@ -16,7 +16,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(passport.initialize());
 
-app.use(require('./routes/auth.route'));
+app.use(require('./routes'));
 
 const connectAndStartServer = async () => {
   try {
