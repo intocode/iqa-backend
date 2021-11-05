@@ -13,7 +13,7 @@ module.exports.usersController = {
           name: req.user.username,
           githubId: req.user.id,
           email: req.user.emails[0].value,
-          avatarURL: req.user.avatarURL,
+          avatarURL: req.user._json.avatar_url,
         });
       }
 
@@ -64,6 +64,7 @@ module.exports.usersController = {
       `);
   },
   userCheck: async (req, res) => {
+    console.log(req.user);
     res.json(`hello ${req.user.name}`);
   },
 };

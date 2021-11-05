@@ -5,19 +5,19 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
-router.get('/auth/check', authMiddleware, usersController.userCheck);
+router.get('/check', authMiddleware, usersController.userCheck);
 
-router.get('/auth/github', passport.authenticate('github'));
+router.get('/github', passport.authenticate('github'));
 
 router.get(
-  '/auth/github/callback',
+  '/github/callback',
   passport.authenticate('github', {
     failureRedirect: '/auth/github/failure',
   }),
   usersController.authUser
 );
 
-router.get('/auth/github/failure', usersController.authFailure);
+router.get('/github/failure', usersController.authFailure);
 
 router.get('/logout', (req, res) => {
   req.logOut();
