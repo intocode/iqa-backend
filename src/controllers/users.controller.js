@@ -64,7 +64,6 @@ module.exports.usersController = {
       `);
   },
   userCheck: async (req, res) => {
-    console.log(req.user);
     res.json(`hello ${req.user.name}`);
   },
 };
