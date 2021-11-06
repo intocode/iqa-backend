@@ -63,6 +63,15 @@ module.exports.usersController = {
         </html>
       `);
   },
+  getMyProfile: async (req, res) => {
+    try {
+      const profile = await User.findById(req.user.userId);
+
+      return res.json(profile);
+    } catch (e) {
+      return res.json({ error: e.toString() });
+    }
+  },
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
