@@ -7,7 +7,7 @@ module.exports.questionsController = {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res.json({ message: 'Error', errors });
+        return res.status(400).json({ message: 'Error', errors });
       }
 
       const question = await Question.create({

@@ -7,13 +7,13 @@ const router = Router();
 
 router.post(
   '/',
+  authMiddleware,
   [
     check(
       'question',
       'Длина текста должна быть больше 4 и меньше 140 символов'
     ).isLength({ min: 4, max: 140 }),
   ],
-  authMiddleware,
   questionsController.addQuestion
 );
 
