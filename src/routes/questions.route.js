@@ -5,6 +5,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
+router.get('/', authMiddleware, questionsController.getAllQuestions);
 router.post(
   '/',
   authMiddleware,
