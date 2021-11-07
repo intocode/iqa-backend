@@ -21,4 +21,13 @@ module.exports.questionsController = {
       return res.json({ error: e.toString() });
     }
   },
+  getAllQuestions: async (req, res) => {
+    try {
+      const allQuestions = await Question.find();
+
+      return res.json(allQuestions);
+    } catch (e) {
+      return res.json({ error: e.toString() });
+    }
+  },
 };
