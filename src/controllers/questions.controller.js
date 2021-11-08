@@ -13,21 +13,22 @@ module.exports.questionsController = {
       const question = await Question.create({
         question: req.body.question,
         comment: req.body.comment,
+        tags: req.body.tags,
         user: req.user.userId,
       });
 
       return res.json({ message: 'Question created', question });
     } catch (e) {
-      return res.json({ error: e.toString() });
+      return res.status(400).json({ error: e.toString() });
     }
   },
   getAllQuestions: async (req, res) => {
     try {
-      const allQuestions = await Question.find();
+      const allQuestions = await Question.find().populate('tags');
 
       return res.json(allQuestions);
     } catch (e) {
-      return res.json({ error: e.toString() });
+      return res.status(400).json({ error: e.toString() });
     }
   },
 };

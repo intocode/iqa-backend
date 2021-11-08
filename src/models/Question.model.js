@@ -9,6 +9,7 @@ const questionSchema = Schema(
     comment: {
       type: String,
     },
+    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     user: {
       type: Schema.Types.ObjectId,
       ref: 'User',
