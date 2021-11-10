@@ -10,12 +10,18 @@ module.exports.tagsController = {
         return res.status(400).json({ message: 'Error', errors });
       }
 
+      const candidate = Tag.findOne({ name: req.body.name });
+
+      if (candidate) {
+        return res.json(candidate);
+      }
+
       const tag = await Tag.create({
         name: req.body.name,
         color: req.body.color,
       });
 
-      return res.json({ message: 'Tag created', tag });
+      return res.json(tag);
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
