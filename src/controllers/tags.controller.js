@@ -10,7 +10,7 @@ module.exports.tagsController = {
         return res.status(400).json({ message: 'Error', errors });
       }
 
-      const candidate = Tag.findOne({ name: req.body.name });
+      const candidate = await Tag.findOne({ name: req.body.name });
 
       if (candidate) {
         return res.json(candidate);
