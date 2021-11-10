@@ -42,7 +42,7 @@ module.exports.usersController = {
         </html>
       `);
     } catch (e) {
-      res.json({ error: e.toString() });
+      res.status(400).json({ error: e.toString() });
     }
   },
   authFailure: (req, res) => {
@@ -69,7 +69,7 @@ module.exports.usersController = {
 
       return res.json(profile);
     } catch (e) {
-      return res.json({ error: e.toString() });
+      return res.status(400).json({ error: e.toString() });
     }
   },
   userCheck: async (req, res) => {
