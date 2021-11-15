@@ -5,15 +5,16 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
-router.get('/', tagsController.getTags);
+router.get('/', authMiddleware, tagsController.getTags);
+
 router.post(
   '/',
   authMiddleware,
   [
-    check(
-      'name',
-      'Длина текста должна быть больше 1 и меньше 15 символов'
-    ).isLength({ min: 1, max: 15 }),
+    check('name', 'Длина текста должна быть от 2 до 15 символов').isLength({
+      min: 1,
+      max: 15,
+    }),
   ],
   tagsController.addTag
 );

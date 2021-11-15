@@ -1,5 +1,18 @@
 const { Schema, model } = require('mongoose');
 
+const rateSchema = Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+    },
+    volume: {
+      type: Number,
+      enum: [-1, 1],
+    },
+  },
+  { timestamps: true }
+);
+
 const questionSchema = Schema(
   {
     question: {
@@ -15,6 +28,7 @@ const questionSchema = Schema(
       ref: 'User',
       required: true,
     },
+    rates: [rateSchema],
   },
   { timestamps: true }
 );

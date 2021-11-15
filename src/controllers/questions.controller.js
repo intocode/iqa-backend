@@ -25,8 +25,8 @@ module.exports.questionsController = {
   getAllQuestions: async (req, res) => {
     try {
       const allQuestions = await Question.find()
-        .populate('tags')
-        .populate('user');
+        .populate('tags', { _id: 0, name: 1, color: 1 })
+        .populate('user', { name: 1, avatarURL: 1 });
 
       return res.json(allQuestions);
     } catch (e) {
