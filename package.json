@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/intocode/iqa-backend#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -30,7 +31,8 @@
     "mongoose": "^6.0.11",
     "morgan": "^1.10.0",
     "passport": "^0.5.0",
-    "passport-github2": "^0.1.12"
+    "passport-github2": "^0.1.12",
+    "sharp": "^0.29.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
