@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan('dev'));
 app.use(passport.initialize());
+app.use('/static', express.static(`${__dirname}/../static`));
 
 app.use(require('./routes'));
 
