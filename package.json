@@ -4,12 +4,14 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon ./src/index.js -q",
-    "lint": "eslint ./src --report-unused-disable-directives --max-warnings 0 --ext .js",
+    "start": "node src/server",
+    "dev": "nodemon ./src/server -q",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0 --ext .js",
     "prettier": "prettier --write ./src",
     "prepare": "husky install",
-    "test": ""
+    "test": "jest",
+    "tdd": "jest --watchAll",
+    "check": "npm run prettier && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
+    "@types/jest": "^27.0.3",
     "@types/morgan": "^1.9.3",
     "@types/passport": "^1.0.7",
     "@types/passport-github2": "^1.2.5",
@@ -43,17 +46,20 @@
     "eslint-config-airbnb": "^19.0.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
     "husky": "^7.0.4",
+    "jest": "^27.4.3",
     "lint-staged": "^12.1.2",
     "nodemon": "^2.0.14",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "supertest": "^6.1.6"
   },
   "lint-staged": {
     "*.js": [
-      "npm run lint",
-      "eslint --cache --fix"
+      "npm run prettier",
+      "npm run lint"
     ],
     "*.{js,css,md}": "prettier --write"
   }
