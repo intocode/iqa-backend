@@ -26,7 +26,7 @@ module.exports.questionsController = {
     try {
       const allQuestions = await Question.find()
         .populate('tags', { _id: 0, name: 1, color: 1 })
-        .populate('user', { name: 1, avatarURL: 1 });
+        .populate('user', { name: 1, githubId: 1, avatar: 1 });
 
       return res.json(allQuestions);
     } catch (e) {
