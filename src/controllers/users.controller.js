@@ -1,4 +1,6 @@
 const fs = require('fs');
+const fsp = require('fs/promises');
+const path = require('path');
 const sharp = require('sharp');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
@@ -6,7 +8,7 @@ const User = require('../models/User.model');
 
 const { JWT_SECRET_KEY, JWT_EXPIRES_IN } = process.env;
 
-const downloadImage = (url, path) =>
+const downloadImage = (url, dir) =>
   axios({
     url,
     responseType: 'stream',
@@ -14,7 +16,7 @@ const downloadImage = (url, path) =>
     (response) =>
       new Promise((resolve, reject) => {
         response.data
-          .pipe(fs.createWriteStream(path))
+          .pipe(fs.createWriteStream(dir))
           .on('finish', () => resolve())
           .on('error', (e) => reject(e));
       })
@@ -26,18 +28,27 @@ module.exports.usersController = {
       let candidate = await User.findOne({ githubId: req.user.id });
 
       if (!candidate) {
+        try {
+          await fsp.access(path.resolve(process.cwd(), 'static/small'));
+          // eslint-disable-next-line no-console
+          console.log('Папка ./static/small/ существует');
+        } catch (_) {
+          await fsp.mkdir(path.resolve(process.cwd(), 'static/small'), {
+            recursive: true,
+          });
+          // eslint-disable-next-line no-console
+          console.log(
+            `Папка ${path.resolve(process.cwd(), 'static/small')} создана`
+          );
+        }
+
         const imageName = `${req.user.id}.jpg`;
 
-        (async () => {
-          await downloadImage(
-            req.user._json.avatar_url,
-            `./static/${imageName}`
-          );
-          await sharp(`./static/${imageName}`)
-            .resize(36, 36)
-            .jpeg()
-            .toFile(`./static/small/${imageName}`);
-        })();
+        await downloadImage(req.user._json.avatar_url, `./static/${imageName}`);
+        await sharp(`./static/${imageName}`)
+          .resize(36, 36)
+          .jpeg()
+          .toFile(`./static/small/${imageName}`);
 
         candidate = await User.create({
           name: req.user.username,
