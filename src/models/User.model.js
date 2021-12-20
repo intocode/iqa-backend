@@ -15,6 +15,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    avatarUrl: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -24,10 +28,9 @@ const userSchema = mongoose.Schema(
 );
 
 userSchema.virtual('avatar').get(function getAvatar() {
-  // console.log(this);
   return {
-    thumbnail: `${process.env.SITE_URL}/static/small/${this.githubId}.jpg`,
-    full: `${process.env.SITE_URL}/static/${this.githubId}.jpg`,
+    thumbnail: `${this.avatarUrl}&s=40`,
+    full: this.avatarUrl,
   };
 });
 
