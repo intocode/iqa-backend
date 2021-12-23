@@ -29,7 +29,7 @@ module.exports.questionsController = {
       if (id) {
         const question = await Question.findById(id)
           .populate('tags', { _id: 0, name: 1, color: 1 })
-          .populate('user', { name: 1, avatarURL: 1 });
+          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
 
         return res.json(question);
       }
