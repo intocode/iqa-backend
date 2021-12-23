@@ -6,7 +6,7 @@ const Question = require('../models/Question.model');
 
 const router = Router();
 
-router.get('/', questionsController.getAllQuestions);
+router.get('/:id?', questionsController.getQuestions);
 router.post(
   '/',
   authMiddleware,
