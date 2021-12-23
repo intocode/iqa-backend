@@ -22,8 +22,18 @@ module.exports.questionsController = {
       return res.status(400).json({ error: e.toString() });
     }
   },
-  getAllQuestions: async (req, res) => {
+  getQuestions: async (req, res) => {
     try {
+      const { id } = req.params;
+
+      if (id) {
+        const question = await Question.findById(id)
+          .populate('tags', { _id: 0, name: 1, color: 1 })
+          .populate('user', { name: 1, avatarURL: 1 });
+
+        return res.json(question);
+      }
+
       const allQuestions = await Question.find()
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
