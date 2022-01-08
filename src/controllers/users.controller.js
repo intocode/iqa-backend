@@ -87,4 +87,16 @@ module.exports.usersController = {
       });
     }
   },
+  deleteQuestionInFavorites: async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.userId, {
+        $pull: { favorites: req.params.id },
+      });
+      res.json(user.favorites);
+    } catch (e) {
+      res.json({
+        message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
+      });
+    }
+  },
 };
