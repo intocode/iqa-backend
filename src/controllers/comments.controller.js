@@ -23,7 +23,7 @@ module.exports.commentsController = {
       return res.status(400).json({ error: e.toString() });
     }
   },
-  getCommentsForQuestion: async (req, res) => {
+  getCommentsByQuestionId: async (req, res) => {
     try {
       const { id } = req.params;
 
@@ -33,7 +33,7 @@ module.exports.commentsController = {
 
       return res.json(comments);
     } catch (e) {
-      return res.status(400).json(e.toString());
+      return res.status(400).json({ error: e.toString() });
     }
   },
 };
