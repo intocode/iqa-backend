@@ -5,6 +5,6 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const router = Router();
 
 router.get('/profile', authMiddleware, usersController.getMyProfile);
-router.patch("/inFavorites/question/:id",authMiddleware, usersController.addQuestionInFavorites);
+router.post("/favorites/:id",authMiddleware, usersController.addQuestionInFavorites);
 
 module.exports = router;

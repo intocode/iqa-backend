@@ -78,9 +78,9 @@ module.exports.usersController = {
   addQuestionInFavorites: async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(req.user.userId, {
-        $push: { questionsFavorites: req.params.id },
+        $addToSet: { favorites: req.params.id },
       });
-      res.json(user);
+      res.json(user.favorites);
     } catch (e) {
       res.json({
         message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
