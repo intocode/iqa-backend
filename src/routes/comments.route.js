@@ -10,4 +10,6 @@ router.post(
   commentsController.addCommentToPost
 );
 
+router.get('/for/question/:id', commentsController.getCommentsForQuestion);
+
 module.exports = router;
