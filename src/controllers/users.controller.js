@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
+const Question = require('../models/Question.model');
+const { log } = require('nodemon/lib/utils');
 
 const { JWT_SECRET_KEY, JWT_EXPIRES_IN } = process.env;
 
@@ -77,8 +79,15 @@ module.exports.usersController = {
   },
   addQuestionInFavorites: async (req, res) => {
     try {
+      const question = await Question.findById(req.params.id);
+
+      if (!question) {
+        res.status(404).json({
+          message: 'Такого вопроса нет',
+        });
+      }
       const user = await User.findByIdAndUpdate(req.user.userId, {
-        $addToSet: { favorites: req.params.id },
+        $addToSet: { favorites: req.params.id }
       });
       res.json(user.favorites);
     } catch (e) {
