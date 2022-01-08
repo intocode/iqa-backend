@@ -5,7 +5,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const router = Router();
 
 router.post(
-  '/add/:questionId',
+  '/add/question/:id',
   authMiddleware,
   commentsController.addCommentToPost
 );

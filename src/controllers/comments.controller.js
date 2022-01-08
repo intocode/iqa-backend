@@ -1,14 +1,24 @@
 const Comment = require('../models/Comment.model');
+const Question = require('../models/Question.model');
 
 module.exports.commentsController = {
   addCommentToPost: async (req, res) => {
     try {
-      const comm = await Comment.create({
+      const { id } = req.params;
+
+      const question = await Question.findById(id);
+
+      if (!question) {
+        return res.status(400).json({ error: 'такого вопроса не существует' });
+      }
+
+      const comment = await Comment.create({
         text: req.body.text,
         authorId: req.user.userId,
-        questionId: req.params.questionId,
+        questionId: id,
       });
-      return res.json(comm);
+
+      return res.json(comment);
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
