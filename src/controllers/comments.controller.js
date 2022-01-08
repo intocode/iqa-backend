@@ -23,4 +23,17 @@ module.exports.commentsController = {
       return res.status(400).json({ error: e.toString() });
     }
   },
+  getCommentsByQuestionId: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const comments = await Comment.find({
+        questionId: id,
+      });
+
+      return res.json(comments);
+    } catch (e) {
+      return res.status(400).json({ error: e.toString() });
+    }
+  },
 };

@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 const { questionsController } = require('../controllers/questions.controller');
+const { commentsController } = require('../controllers/comments.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const Question = require('../models/Question.model');
 
@@ -62,5 +63,13 @@ router.post('/:questionId/rate', authMiddleware, async (req, res) => {
     });
   }
 });
+
+router.get('/:id/comments', commentsController.getCommentsByQuestionId);
+
+router.post(
+  '/:id/comments',
+  authMiddleware,
+  commentsController.addCommentToPost
+);
 
 module.exports = router;
