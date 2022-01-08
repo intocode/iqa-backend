@@ -75,4 +75,16 @@ module.exports.usersController = {
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
+  addQuestionInFavorites: async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(req.user.userId, {
+        $push: { questionsFavorites: req.params.id },
+      });
+      res.json(user);
+    } catch (e) {
+      res.json({
+        message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
+      });
+    }
+  },
 };

@@ -19,6 +19,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    questionsFavorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Question',
+      },
+    ],
   },
   {
     timestamps: true,
