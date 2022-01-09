@@ -86,7 +86,7 @@ module.exports.usersController = {
         });
       }
       const user = await User.findByIdAndUpdate(req.user.userId, {
-        $addToSet: { favorites: req.params.id }
+        $addToSet: { favorites: req.params.id },
       });
       return res.json(user.favorites);
     } catch (e) {
@@ -97,9 +97,13 @@ module.exports.usersController = {
   },
   deleteQuestionInFavorites: async (req, res) => {
     try {
-      const user = await User.findByIdAndUpdate(req.user.userId, {
-        $pull: { favorites: req.params.id },
-      });
+      const user = await User.findByIdAndUpdate(
+        req.user.userId,
+        {
+          $pull: { favorites: req.params.id },
+        },
+        { new: true }
+      );
       res.json(user.favorites);
     } catch (e) {
       res.json({
