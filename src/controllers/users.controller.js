@@ -115,4 +115,17 @@ module.exports.usersController = {
       });
     }
   },
+  getFavoritesByUser: async (req, res) => {
+    try {
+      const favorites = await User.findById(req.user.userId).populate(
+        'favorites'
+      );
+
+      res.json(favorites.favorites);
+    } catch (e) {
+      res.json({
+        message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
+      });
+    }
+  },
 };
