@@ -117,9 +117,9 @@ module.exports.usersController = {
   },
   getFavoritesByUser: async (req, res) => {
     try {
-      const user = await User.findById(req.user.userId,{favorites:1}).populate(
-        'favorites'
-      );
+      const user = await User.findById(req.user.userId, {
+        favorites: 1,
+      }).populate('favorites');
 
       res.json(user);
     } catch (e) {
