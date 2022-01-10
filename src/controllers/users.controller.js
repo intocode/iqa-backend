@@ -121,7 +121,7 @@ module.exports.usersController = {
         favorites: 1,
       }).populate('favorites');
 
-      res.json(user);
+      res.json(user.favorites);
     } catch (e) {
       res.json({
         message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
