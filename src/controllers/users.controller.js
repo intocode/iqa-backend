@@ -117,11 +117,9 @@ module.exports.usersController = {
   },
   getFavoritesByUser: async (req, res) => {
     try {
-      const favorites = await User.findById(req.user.userId).populate(
-        'favorites'
-      );
+      const user = await User.findById(req.user.userId, { favorites: 1 });
 
-      res.json(favorites.favorites);
+      res.json(user);
     } catch (e) {
       res.json({
         message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
