@@ -76,7 +76,7 @@ module.exports.usersController = {
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
-  addQuestionInFavorites: async (req, res) => {
+  addQuestionToFavorites: async (req, res) => {
     try {
       const question = await Question.findById(req.params.id);
 
@@ -117,7 +117,9 @@ module.exports.usersController = {
   },
   getFavoritesByUser: async (req, res) => {
     try {
-      const user = await User.findById(req.user.userId, { favorites: 1 });
+      const user = await User.findById(req.user.userId,{favorites:1}).populate(
+        'favorites'
+      );
 
       res.json(user);
     } catch (e) {
