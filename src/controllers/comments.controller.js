@@ -12,11 +12,14 @@ module.exports.commentsController = {
         return res.status(400).json({ error: 'такого вопроса не существует' });
       }
 
-      const comment = await Comment.create({
+      const createdComment = await Comment.create({
         text: req.body.text,
         author: req.user.userId,
         questionId: id,
       });
+
+      const comment = await Comment.findById(createdComment._id)
+        .populate('author', { id: 1, name: 1, avatarUrl: 1 });
 
       return res.json(comment);
     } catch (e) {
@@ -29,8 +32,7 @@ module.exports.commentsController = {
 
       const comments = await Comment.find({
         questionId: id,
-      })
-      .populate('author', { id: 1, name: 1, avatarUrl: 1 });
+      }).populate('author', { id: 1, name: 1, avatarUrl: 1 });
 
       return res.json(comments);
     } catch (e) {
