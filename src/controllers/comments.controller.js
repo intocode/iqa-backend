@@ -29,7 +29,7 @@ module.exports.commentsController = {
 
       const comments = await Comment.find({
         questionId: id,
-      }).populate('authorId', {_id:1, name:1, avatar:1})
+      }).populate('authorId', { _id: 1, name: 1, avatar: 1 });
 
       return res.json(comments);
     } catch (e) {
