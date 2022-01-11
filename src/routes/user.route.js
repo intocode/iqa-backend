@@ -5,7 +5,12 @@ const authMiddleware = require('../middlewares/auth.middleware');
 const router = Router();
 
 router.get('/profile', authMiddleware, usersController.getMyProfile);
-router.post('/favorites/:id',authMiddleware, usersController.addQuestionInFavorites);
+router.get('/favorites', authMiddleware, usersController.getFavoritesByUser);
+router.post(
+  '/favorites/:id',
+  authMiddleware,
+  usersController.addQuestionToFavorites
+);
 router.delete(
   '/favorites/:id',
   authMiddleware,

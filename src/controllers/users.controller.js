@@ -76,7 +76,7 @@ module.exports.usersController = {
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
-  addQuestionInFavorites: async (req, res) => {
+  addQuestionToFavorites: async (req, res) => {
     try {
       const question = await Question.findById(req.params.id);
 
@@ -85,9 +85,13 @@ module.exports.usersController = {
           message: 'Такого вопроса нет',
         });
       }
-      const user = await User.findByIdAndUpdate(req.user.userId, {
-        $addToSet: { favorites: req.params.id }
-      });
+      const user = await User.findByIdAndUpdate(
+        req.user.userId,
+        {
+          $addToSet: { favorites: req.params.id },
+        },
+        { new: true }
+      );
       return res.json(user.favorites);
     } catch (e) {
       return res.json({
@@ -97,13 +101,30 @@ module.exports.usersController = {
   },
   deleteQuestionInFavorites: async (req, res) => {
     try {
-      const user = await User.findByIdAndUpdate(req.user.userId, {
-        $pull: { favorites: req.params.id },
-      });
+      const user = await User.findByIdAndUpdate(
+        req.user.userId,
+        {
+          $pull: { favorites: req.params.id },
+        },
+        { new: true }
+      );
       res.json(user.favorites);
     } catch (e) {
       res.json({
         message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
+      });
+    }
+  },
+  getFavoritesByUser: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.userId, {
+        favorites: 1,
+      }).populate('favorites');
+
+      res.json(user.favorites);
+    } catch (e) {
+      res.json({
+        message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
       });
     }
   },
