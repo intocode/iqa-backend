@@ -25,6 +25,9 @@ const userSchema = mongoose.Schema(
         ref: 'Question',
       },
     ],
+    isAdmin: {
+      type: Boolean
+    }
   },
   {
     timestamps: true,

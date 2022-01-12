@@ -72,4 +72,10 @@ router.post(
   commentsController.addCommentToPost
 );
 
+router.delete(
+  '/:id/delete',
+  authMiddleware,
+  questionsController.removeQuestion
+);
+
 module.exports = router;
