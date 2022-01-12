@@ -62,7 +62,7 @@ module.exports.questionsController = {
         return res.json(allQuestions);
       }
 
-      return res.json({ error: 'У вас недостаточно прав'})
+      return res.json({ error: 'У вас недостаточно прав' });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
