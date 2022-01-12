@@ -55,14 +55,14 @@ module.exports.questionsController = {
 
       const user = await User.findById(userId);
 
-      if (user.isAdmin && id) {
+      if (user.isAdmin) {
         await Question.findByIdAndRemove(id);
         const allQuestions = await Question.find();
 
         return res.json(allQuestions);
       }
 
-      return res.json('Нет доступа');
+      return res.json({ error: 'У вас недостаточно прав'})
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
