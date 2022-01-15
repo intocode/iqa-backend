@@ -18,8 +18,10 @@ module.exports.commentsController = {
         questionId: id,
       });
 
-      const comment = await Comment.findById(createdComment._id)
-        .populate('author', { id: 1, name: 1, avatarUrl: 1 });
+      const comment = await Comment.findById(createdComment._id).populate(
+        'author',
+        { id: 1, name: 1, avatarUrl: 1 }
+      );
 
       return res.json(comment);
     } catch (e) {

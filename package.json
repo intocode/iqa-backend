@@ -11,7 +11,7 @@
     "prepare": "husky install",
     "test": "jest",
     "tdd": "jest --watchAll",
-    "check": "npm run prettier && npm run lint && npm run test"
+    "check": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -26,34 +26,34 @@
   "dependencies": {
     "axios": "^0.24.0",
     "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.13.0",
+    "dotenv": "^12.0.3",
+    "express": "^4.17.2",
+    "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.14",
+    "mongoose": "^6.1.6",
     "morgan": "^1.10.0",
-    "passport": "^0.5.0",
+    "passport": "^0.5.2",
     "passport-github2": "^0.1.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
-    "@types/jest": "^27.0.3",
+    "@types/jest": "^27.4.0",
     "@types/morgan": "^1.9.3",
     "@types/passport": "^1.0.7",
     "@types/passport-github2": "^1.2.5",
-    "eslint": "^8.4.0",
-    "eslint-config-airbnb": "^19.0.2",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jest": "^25.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.3.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-promise": "^6.0.0",
     "husky": "^7.0.4",
-    "jest": "^27.4.3",
-    "lint-staged": "^12.1.2",
+    "jest": "^27.4.7",
+    "lint-staged": "^12.1.7",
     "nodemon": "^2.0.14",
     "prettier": "^2.5.1",
-    "supertest": "^6.1.6"
+    "supertest": "^6.2.1"
   },
   "lint-staged": {
     "*.js": [
