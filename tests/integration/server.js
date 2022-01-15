@@ -9,7 +9,6 @@ afterAll(() => mongoose.disconnect());
 
 describe('routes', () => {
   it('must response with `hi`', async () => {
-    // prettier-ignore
     await request(app)
       .get('/')
       .expect('Content-type', /json/)
@@ -37,6 +36,18 @@ describe('routes', () => {
             'rates',
           ])
         );
+      });
+  });
+
+  it('must response json with "error" key', async () => {
+    await request(app)
+      .post('/questions')
+      .expect('Content-type', /json/)
+      .expect(401)
+      .expect((res) => {
+        const { body } = res;
+
+        expect(body).toHaveProperty('error');
       });
   });
 });
