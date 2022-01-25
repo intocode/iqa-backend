@@ -119,7 +119,13 @@ module.exports.usersController = {
     try {
       const user = await User.findById(req.user.userId, {
         favorites: 1,
-      }).populate('favorites');
+      }).populate({
+        path: 'favorites',
+        populate: {
+          path: 'user',
+          model: 'User'
+        }
+      });
 
       res.json(user.favorites);
     } catch (e) {
