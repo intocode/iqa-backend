@@ -121,10 +121,16 @@ module.exports.usersController = {
         favorites: 1,
       }).populate({
         path: 'favorites',
-        populate: {
-          path: 'user',
-          model: 'User'
-        }
+        populate: [
+          {
+            path: 'user',
+            model: 'User',
+          },
+          {
+            path: 'tags',
+            model: 'Tag',
+          },
+        ],
       });
 
       res.json(user.favorites);
