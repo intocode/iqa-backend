@@ -56,7 +56,7 @@ module.exports.questionsController = {
       const user = await User.findById(userId);
 
       if (user.isAdmin) {
-        await Question.findByIdAndRemove(id);
+        await Question.findByIdAndUpdate(id, { $set: { deleted: true } });
         const allQuestions = await Question.find();
 
         return res.json(allQuestions);
