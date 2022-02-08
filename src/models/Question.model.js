@@ -29,6 +29,10 @@ const questionSchema = Schema(
       required: true,
     },
     rates: [rateSchema],
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
