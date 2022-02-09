@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
+const Comment = require('../models/Comment.model');
 
 module.exports.questionsController = {
   addQuestion: async (req, res) => {
@@ -41,7 +42,8 @@ module.exports.questionsController = {
 
       const allQuestions = await Question.find()
         .populate('tags', { _id: 0, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
+        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }) // fix avatarUrl: 1
+        .populate('totalComments');
 
       return res.json(allQuestions);
     } catch (e) {
