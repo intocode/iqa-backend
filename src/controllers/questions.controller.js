@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
 
@@ -39,7 +40,27 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
-      const allQuestions = await Question.find()
+      if (req.headers.authorization) {
+        const { authorization } = req.headers;
+        const [type, token] = authorization.split(' ');
+
+        if (type !== 'Bearer') {
+          throw new Error("wrong token's type");
+        }
+
+        const authUser = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const user = await User.findById(authUser.userId);
+
+        if (user.isAdmin) {
+          const allQuestions = await Question.find()
+            .populate('tags', { _id: 0, name: 1, color: 1 })
+            .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
+
+          return res.json(allQuestions);
+        }
+      }
+
+      const allQuestions = await Question.find({ deleted: null })
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
 
