@@ -40,6 +40,13 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
+      const { search } = req.query;
+
+      if (search) {
+        const question = await Question.find({ $text: { $search: search } });
+        return res.json(question);
+      }
+
       if (req.headers.authorization) {
         const { authorization } = req.headers;
         const [type, token] = authorization.split(' ');

@@ -37,6 +37,8 @@ const questionSchema = Schema(
   { timestamps: true }
 );
 
+questionSchema.index({ question: 'text' });
+
 const Question = model('Question', questionSchema);
 
 module.exports = Question;
