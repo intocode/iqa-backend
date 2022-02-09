@@ -39,6 +39,13 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
+      const { search } = req.query;
+
+      if (search) {
+        const question = await Question.find({ $text: { $search: search } });
+        return res.json(question);
+      }
+
       const allQuestions = await Question.find()
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
