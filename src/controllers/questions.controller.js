@@ -60,7 +60,7 @@ module.exports.questionsController = {
         }
       }
 
-      const allQuestions = await Question.find({ deleted: null })
+      const allQuestions = await Question.find({ deleted: false })
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
 
@@ -78,6 +78,26 @@ module.exports.questionsController = {
 
       if (user.isAdmin) {
         await Question.findByIdAndUpdate(id, { $set: { deleted: true } });
+        const allQuestions = await Question.find();
+
+        return res.json(allQuestions);
+      }
+
+      return res.json({ error: 'У вас недостаточно прав' });
+    } catch (e) {
+      return res.status(400).json({ error: e.toString() });
+    }
+  },
+
+  restoreQuestion: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { userId } = req.user;
+
+      const user = await User.findById(userId);
+
+      if (user) {
+        await Question.findByIdAndUpdate(id, { $set: { deleted: 'false' } });
         const allQuestions = await Question.find();
 
         return res.json(allQuestions);

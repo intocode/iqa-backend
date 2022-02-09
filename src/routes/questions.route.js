@@ -78,4 +78,10 @@ router.delete(
   questionsController.removeQuestion
 );
 
+router.patch(
+  '/:id/restore',
+  authMiddleware,
+  questionsController.restoreQuestion
+);
+
 module.exports = router;
