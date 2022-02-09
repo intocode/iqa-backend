@@ -60,7 +60,7 @@ module.exports.questionsController = {
         }
       }
 
-      const allQuestions = await Question.find({ deleted: false })
+      const allQuestions = await Question.find({ deleted: { $ne: true } })
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
 
@@ -78,9 +78,8 @@ module.exports.questionsController = {
 
       if (user.isAdmin) {
         await Question.findByIdAndUpdate(id, { $set: { deleted: true } });
-        const allQuestions = await Question.find();
 
-        return res.json(allQuestions);
+        return res.json({ message: 'Question deleted' });
       }
 
       return res.json({ error: 'У вас недостаточно прав' });
@@ -98,9 +97,8 @@ module.exports.questionsController = {
 
       if (user) {
         await Question.findByIdAndUpdate(id, { $set: { deleted: 'false' } });
-        const allQuestions = await Question.find();
 
-        return res.json(allQuestions);
+        return res.json({ message: 'Question restored' });
       }
 
       return res.json({ error: 'У вас недостаточно прав' });
