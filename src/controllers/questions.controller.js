@@ -49,11 +49,7 @@ module.exports.questionsController = {
 
       if (req.headers.authorization) {
         const { authorization } = req.headers;
-        const [type, token] = authorization.split(' ');
-
-        if (type !== 'Bearer') {
-          throw new Error("wrong token's type");
-        }
+        const [, token] = authorization.split(' ');
 
         const authUser = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         const user = await User.findById(authUser.userId);
