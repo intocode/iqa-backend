@@ -28,14 +28,17 @@ const questionSchema = Schema(
       ref: 'User',
       required: true,
     },
-    totalComments: {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment',
-    },
     rates: [rateSchema],
   },
   { timestamps: true }
 );
+
+questionSchema.virtual('comments', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'questionId',
+  justOne: false,
+});
 
 const Question = model('Question', questionSchema);
 
