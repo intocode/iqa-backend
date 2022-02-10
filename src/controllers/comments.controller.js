@@ -36,7 +36,9 @@ module.exports.commentsController = {
         questionId: id,
       }).populate('author', { id: 1, name: 1, avatarUrl: 1 });
 
-      return res.json(comments);
+      const commentsCounter = await Comment.find({ questionId: id }).count();
+
+      return res.json({ comments, commentsCounter });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }

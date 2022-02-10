@@ -33,13 +33,6 @@ const questionSchema = Schema(
   { timestamps: true }
 );
 
-questionSchema.virtual('comments', {
-  ref: 'Comment',
-  localField: '_id',
-  foreignField: 'questionId',
-  justOne: false,
-});
-
 const Question = model('Question', questionSchema);
 
 module.exports = Question;

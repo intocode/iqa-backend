@@ -41,8 +41,7 @@ module.exports.questionsController = {
 
       const allQuestions = await Question.find()
         .populate('tags', { _id: 0, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }) // fix avatarUrl: 1
-        .populate('comments', { questionId: 1 });
+        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
 
       return res.json(allQuestions);
     } catch (e) {
