@@ -18,6 +18,10 @@ module.exports.commentsController = {
         questionId: id,
       });
 
+      await Question.findByIdAndUpdate(id, {
+        $inc: { commentsCount: +1 },
+      });
+
       const comment = await Comment.findById(createdComment._id).populate(
         'author',
         { id: 1, name: 1, avatarUrl: 1 }
@@ -36,9 +40,7 @@ module.exports.commentsController = {
         questionId: id,
       }).populate('author', { id: 1, name: 1, avatarUrl: 1 });
 
-      const commentsCounter = await Comment.find({ questionId: id }).count();
-
-      return res.json({ comments, commentsCounter });
+      return res.json(comments);
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }

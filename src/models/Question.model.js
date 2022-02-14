@@ -28,6 +28,10 @@ const questionSchema = Schema(
       ref: 'User',
       required: true,
     },
+    commentsCount: {
+      type: Number,
+      default: 0,
+    },
     rates: [rateSchema],
   },
   { timestamps: true }
