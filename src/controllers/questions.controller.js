@@ -47,12 +47,13 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
-      try {
-        if (req.headers.authorization) {
-          const { authorization } = req.headers;
-          const [, token] = authorization.split(' ');
-
+      if (req.headers.authorization) {
+        const { authorization } = req.headers;
+        const [, token] = authorization.split(' ');
+        /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
+        try {
           const authUser = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+
           const user = await User.findById(authUser.userId);
 
           if (user.isAdmin) {
@@ -62,13 +63,7 @@ module.exports.questionsController = {
 
             return res.json(allQuestionsForAdmin);
           }
-        }
-      } catch (e) {
-        const allQuestions = await Question.find({ deleted: { $ne: true } })
-          .populate('tags', { _id: 0, name: 1, color: 1 })
-          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
-
-        return res.json(allQuestions);
+        } catch (e) {}
       }
 
       const allQuestions = await Question.find({ deleted: { $ne: true } })
