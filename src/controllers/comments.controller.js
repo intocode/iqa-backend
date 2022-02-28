@@ -18,9 +18,7 @@ module.exports.commentsController = {
         questionId: id,
       });
 
-      await Question.findByIdAndUpdate(id, {
-        $inc: { commentsCount: +1 },
-      });
+      await Comment.where({ questionId: id }).count();
 
       const comment = await Comment.findById(createdComment._id).populate(
         'author',
