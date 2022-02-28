@@ -21,7 +21,7 @@ const commentSchema = Schema(
   { timestamps: true }
 );
 
-// eslint-disable-next-line prefer-arrow-callback
+// eslint-disable-next-line func-names
 commentSchema.pre('save', async function (next) {
   await Question.findByIdAndUpdate(this.questionId.toString(), {
     $inc: { commentsCount: +1 },

@@ -18,8 +18,6 @@ module.exports.commentsController = {
         questionId: id,
       });
 
-      await Comment.where({ questionId: id }).count();
-
       const comment = await Comment.findById(createdComment._id).populate(
         'author',
         { id: 1, name: 1, avatarUrl: 1 }
