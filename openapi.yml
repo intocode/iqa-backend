@@ -7,8 +7,10 @@ info:
     name: admin
     email: admin@intocode.ru
 servers:
-  - url: '-'
+  - url: 'https://iqa-frontend.herokuapp.com/'
     description: Deploy server
+  - url: 'http://localhost/3030'
+    description: Local server
 paths:
   /user/profile:
     get:
