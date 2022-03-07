@@ -7,9 +7,9 @@ info:
     name: admin
     email: admin@intocode.ru
 servers:
-  - url: 'https://iqa-backend.herokuapp.com/'
+  - url: 'https://iqa-backend.herokuapp.com'
     description: Deploy server
-  - url: 'http://localhost/3030'
+  - url: 'http://localhost:3030'
     description: Local server
 paths:
   /user/profile:
@@ -191,8 +191,9 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /questions/{search}:
+  /questions/:
     get:
+      summary: Поиск по вопросам
       parameters:
         - in: query
           name: search
