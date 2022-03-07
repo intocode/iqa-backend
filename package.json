@@ -11,7 +11,8 @@
     "prepare": "husky install",
     "test": "jest",
     "tdd": "jest --watchAll",
-    "check": "npm run lint && npm run test"
+    "check": "npm run lint && npm run test",
+    "updateCommentsCounter": "node src/scripts/updateCommentsCounter.js"
   },
   "repository": {
     "type": "git",

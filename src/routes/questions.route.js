@@ -4,26 +4,8 @@ const { questionsController } = require('../controllers/questions.controller');
 const { commentsController } = require('../controllers/comments.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const Question = require('../models/Question.model');
-const Comment = require('../models/Comment.model');
 
 const router = Router();
-
-router.get('/recount', authMiddleware, async (req, res) => {
-  try {
-    const questions = await Question.find();
-
-    questions.forEach(async (question) => {
-      const comments = await Comment.find({ questionId: question._id }).count();
-      await Question.findByIdAndUpdate(question._id, {
-        commentsCount: comments,
-      });
-    });
-
-    return res.json('updated');
-  } catch (e) {
-    return res.status(401).json({ error: e.toString() });
-  }
-});
 
 router.get('/:id?', questionsController.getQuestions);
 router.post(
