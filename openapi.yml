@@ -44,14 +44,14 @@ paths:
           description: 'Не найдено'
   /user/favorites/{questionId}:
     post:
-      summary: Добавление вопроса в избранные по ID
+      summary: 'Добавление вопроса в избранные'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       responses:
@@ -71,14 +71,14 @@ paths:
         '404':
           description: 'Не найдено'
     delete:
-      summary: Удаление вопроса из избранных по ID
+      summary: 'Удаление вопроса из избранных'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       responses:
@@ -143,13 +143,13 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions:
     get:
-      summary: Поиск по вопросам
+      summary: 'Поиск по вопросам'
       parameters:
         - in: query
           name: search
           schema:
             type: string
-          description: Текстовые данные для поиска по вопросам
+          description: 'Текстовые данные для поиска по вопросам'
       responses:
         '200':
           description: 'Вывод всех вопросов'
@@ -205,14 +205,14 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions/{questionId}:
     get:
-      summary: Вывод вопроса по ID
+      summary: 'Вывод вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       responses:
         '200':
           description: 'Вывод вопроса по id'
@@ -224,14 +224,14 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/rate:
     post:
-      summary: Поднятия рейтинга для вопроса по ID
+      summary: 'Поднятия рейтинга для вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       description: 'Поднятие/понижение рейтинга вопроса'
@@ -260,14 +260,14 @@ paths:
           description: 'Не найдено'
   /questions/{questionId}/comments:
     get:
-      summary: Вывод комментарий вопроса по ID
+      summary: 'Вывод комментарий вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       responses:
         '200':
           description: 'Вывод комментарий определенного вопроса'
@@ -278,14 +278,14 @@ paths:
         '404':
           description: 'Не найдено'
     post: 
-      summary: Добавление комментарий вопроса по ID
+      summary: 'Добавление комментарий вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       requestBody:
@@ -318,14 +318,14 @@ paths:
           description: 'Не найдено'
   /questions/{questionId}/delete:
     delete:
-      summary: Удаление вопроса по ID
+      summary: 'Удаление вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       responses:
@@ -346,14 +346,14 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/restore:
     patch:
-      summary: Восстановление вопроса по ID
+      summary: 'Восстановление вопроса'
       parameters:
         - in: path
           name: questionId
           schema:
             type: string
           required: true
-          description: Идентификатор для получения вопроса по ID
+          description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
       responses:
