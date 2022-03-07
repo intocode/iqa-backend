@@ -2,13 +2,13 @@ openapi: 3.0.3
 info:
   title: IQA-application
   version: 0.1.0
-  description: Root API of IQA-application
+  description: API of IQA-application
   contact:
     name: admin
     email: admin@intocode.ru
 servers:
   - url: 'https://iqa-backend.herokuapp.com'
-    description: Deploy server
+    description: Staging server
   - url: 'http://localhost:3030'
     description: Local server
 paths:
@@ -42,8 +42,16 @@ paths:
           description: 'Ошибка авторизации'
         '404':
           description: 'Не найдено'
-  /user/favorites/:id:
+  /user/favorites/{questionId}:
     post:
+      summary: Добавление вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
@@ -180,8 +188,16 @@ paths:
           description: 'Ошибка авторизации'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /questions/:id:
+  /questions/{questionId}:
     get:
+      summary: Вывод вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       responses:
         '200':
           description: 'Вывод вопроса по id'
@@ -200,7 +216,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Данные для поиска
+          description: Текстовые данные для поиска по вопросам
       responses:
         '200':
           description: 'Вывод вопросов по поиску'
@@ -213,8 +229,16 @@ paths:
                   $ref: '#/components/schemas/QuestionData'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /questions/:questionId/rate:
+  /questions/{questionId}/rate:
     post:
+      summary: Поднятия рейтинга для вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       description: 'Поднятие/понижение рейтинга вопроса'
@@ -241,8 +265,16 @@ paths:
           description: 'Ошибка авторизации'
         '404':
           description: 'Не найдено'
-  /questions/id/comments:
+  /questions/{questionId}/comments:
     get:
+      summary: Комментарий вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       responses:
         '200':
           description: 'Вывод комментарий определенного вопроса'
@@ -283,8 +315,16 @@ paths:
           description: 'Неправильный, некорректный запрос'
         '404':
           description: 'Не найдено'
-  /questions/id/delete:
+  /questions/{questionId}/delete:
     delete:
+      summary: Удаление вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
@@ -303,8 +343,16 @@ paths:
           description: 'Недостаточно прав доступа'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /questions/id/restore:
+  /questions/{questionId}/restore:
     patch:
+      summary: Восстановление вопроса по ID
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: integer
+          required: true
+          description: Числовой идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
