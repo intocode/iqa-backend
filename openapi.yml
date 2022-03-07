@@ -49,9 +49,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
@@ -76,9 +76,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
@@ -210,9 +210,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       responses:
         '200':
           description: 'Вывод вопроса по id'
@@ -229,9 +229,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       description: 'Поднятие/понижение рейтинга вопроса'
@@ -265,9 +265,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       responses:
         '200':
           description: 'Вывод комментарий определенного вопроса'
@@ -283,9 +283,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       requestBody:
@@ -323,9 +323,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
@@ -351,9 +351,9 @@ paths:
         - in: path
           name: questionId
           schema:
-            type: integer
+            type: string
           required: true
-          description: Числовой идентификатор для получения вопроса по ID
+          description: Идентификатор для получения вопроса по ID
       security:
         - bearerAuth: []
       responses:
