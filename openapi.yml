@@ -191,8 +191,15 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /questions/?:
+  /questions/{search}:
     get:
+      parameters:
+        - in: query
+          name: search
+          required: true
+          schema:
+            type: string
+          description: Данные для поиска
       responses:
         '200':
           description: 'Вывод вопросов по поиску'
