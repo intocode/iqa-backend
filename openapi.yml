@@ -106,7 +106,7 @@ paths:
           schema:
             type: string
           required: true
-          description: 'Данные для поиска по тэгам'
+          description: 'Поисковая фраза'
       security:
         - bearerAuth: []
       responses:
@@ -160,7 +160,7 @@ paths:
           schema:
             type: string
           required: false
-          description: 'Текстовые данные для поиска по вопросам'
+          description: 'Поисковая фраза'
       responses:
         '200':
           description: 'Вывод всех вопросов'
