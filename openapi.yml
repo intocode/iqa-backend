@@ -99,9 +99,19 @@ paths:
           description: 'Не найдено'
   /tags:
     get:
+      summary: 'Поиск по тэгам'
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          required: true
+          description: 'Данные для поиска по тэгам'
+      security:
+        - bearerAuth: []
       responses:
         '200':
-          description: 'Вывод всех тэгов'
+          description: 'Вывод всех тэгов по поиску'
           content:
             application/json:
               schema:
@@ -149,6 +159,7 @@ paths:
           name: search
           schema:
             type: string
+          required: false
           description: 'Текстовые данные для поиска по вопросам'
       responses:
         '200':
