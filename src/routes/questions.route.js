@@ -10,13 +10,15 @@ const router = Router();
 
 router.get('/recount', authMiddleware, async (req, res) => {
   try {
-    const comments = await Comment.find();
+    const questions = await Question.find();
 
-    comments.forEach(async (comment, i) => {
-      await Question.findByIdAndUpdate(comment.questionId, {
-        commentsCount: i + 1,
+    questions.forEach(async (question) => {
+      const comments = await Comment.find({ questionId: question._id }).count();
+      await Question.findByIdAndUpdate(question._id, {
+        commentsCount: comments,
       });
     });
+
     return res.json('updated');
   } catch (e) {
     return res.status(401).json({ error: e.toString() });
