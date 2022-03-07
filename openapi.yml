@@ -143,9 +143,16 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions:
     get:
+      summary: Поиск по вопросам
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Текстовые данные для поиска по вопросам
       responses:
         '200':
-          description: 'Вывод всех тэгов'
+          description: 'Вывод всех вопросов'
           content:
             application/json:
               schema:
@@ -213,28 +220,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/QuestionData'
-        '400':
-          description: 'Неправильный, некорректный запрос'
-  /questions/:
-    get:
-      summary: Поиск по вопросам
-      parameters:
-        - in: query
-          name: search
-          required: true
-          schema:
-            type: string
-          description: Текстовые данные для поиска по вопросам
-      responses:
-        '200':
-          description: 'Вывод вопросов по поиску'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  $ref: '#/components/schemas/QuestionData'
         '400':
           description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/rate:
