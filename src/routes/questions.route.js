@@ -7,6 +7,12 @@ const Question = require('../models/Question.model');
 
 const router = Router();
 
+router.get(
+  '/deletedQuestions',
+  authMiddleware,
+  questionsController.getRemovedQuestions
+);
+
 router.get('/:id?', questionsController.getQuestions);
 router.post(
   '/',
