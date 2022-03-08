@@ -119,7 +119,9 @@ module.exports.questionsController = {
       const user = await User.findById(userId);
 
       if (user.isAdmin) {
-        const questions = await Question.find({ deleted: true });
+        const questions = await Question.find({ deleted: true })
+          .populate('tags', { _id: 0, name: 1, color: 1 })
+          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
 
         return res.json(questions);
       }
