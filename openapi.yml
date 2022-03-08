@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: IQA-application
-  version: 0.1.0
+  version: 1.0.0
   description: API of IQA-application
   contact:
     name: admin
@@ -233,6 +233,60 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '400':
           description: 'Неправильный, некорректный запрос'
+    delete:
+      summary: 'Удаление вопроса'
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор вопроса'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Удаление вопроса'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Question deleted'
+        '401':
+          description: 'Ошибка авторизации'
+        '403':
+          description: 'Недостаточно прав доступа'
+        '400':
+          description: 'Неправильный, некорректный запрос'
+    patch:
+      summary: 'Восстановление вопроса'
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор вопроса'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Восстановление вопроса'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Question restored'
+        '401':
+          description: 'Ошибка авторизации'
+        '403':
+          description: 'Недостаточно прав доступа'
+        '400':
+          description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/rate:
     post:
       summary: 'Поднятия рейтинга для вопроса'
@@ -327,62 +381,6 @@ paths:
           description: 'Неправильный, некорректный запрос'
         '404':
           description: 'Не найдено'
-  /questions/{questionId}/delete:
-    delete:
-      summary: 'Удаление вопроса'
-      parameters:
-        - in: path
-          name: questionId
-          schema:
-            type: string
-          required: true
-          description: 'Идентификатор вопроса'
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: 'Удаление вопроса'
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                    example: 'Question deleted'
-        '401':
-          description: 'Ошибка авторизации'
-        '403':
-          description: 'Недостаточно прав доступа'
-        '400':
-          description: 'Неправильный, некорректный запрос'
-  /questions/{questionId}/restore:
-    patch:
-      summary: 'Восстановление вопроса'
-      parameters:
-        - in: path
-          name: questionId
-          schema:
-            type: string
-          required: true
-          description: 'Идентификатор вопроса'
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: 'Восстановление вопроса'
-          content:
-            application/json:
-              schema:
-                properties:
-                  message:
-                    type: string
-                    example: 'Question restored'
-        '401':
-          description: 'Ошибка авторизации'
-        '403':
-          description: 'Недостаточно прав доступа'
-        '400':
-          description: 'Неправильный, некорректный запрос'
 components:
   securitySchemes:
     bearerAuth:
