@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
 
@@ -47,25 +46,6 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
-      if (req.headers.authorization) {
-        const { authorization } = req.headers;
-        const [, token] = authorization.split(' ');
-        /* eslint no-empty: ["error", { "allowEmptyCatch": true }] */
-        try {
-          const authUser = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-          const user = await User.findById(authUser.userId);
-
-          if (user.isAdmin) {
-            const allQuestionsForAdmin = await Question.find()
-              .populate('tags', { _id: 0, name: 1, color: 1 })
-              .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
-
-            return res.json(allQuestionsForAdmin);
-          }
-        } catch (e) {}
-      }
-
       const allQuestions = await Question.find({ deleted: { $ne: true } })
         .populate('tags', { _id: 0, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
@@ -110,25 +90,6 @@ module.exports.questionsController = {
       return res.json({ error: 'У вас недостаточно прав' });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
-    }
-  },
-  getRemovedQuestions: async (req, res) => {
-    try {
-      const { userId } = req.user;
-
-      const user = await User.findById(userId);
-
-      if (user.isAdmin) {
-        const questions = await Question.find({ deleted: true })
-          .populate('tags', { _id: 0, name: 1, color: 1 })
-          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
-
-        return res.json(questions);
-      }
-
-      return res.json({ error: 'У вас недостаточно прав' });
-    } catch (e) {
-      return res.status(401).json({ error: e.toString() });
     }
   },
 };
