@@ -92,4 +92,23 @@ module.exports.questionsController = {
       return res.status(400).json({ error: e.toString() });
     }
   },
+  getRemovedQuestions: async (req, res) => {
+    try {
+      const { userId } = req.user;
+
+      const user = await User.findById(userId);
+
+      if (user.isAdmin) {
+        const questions = await Question.find({ deleted: true })
+          .populate('tags', { _id: 0, name: 1, color: 1 })
+          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
+
+        return res.json(questions);
+      }
+
+      return res.json({ error: 'У вас недостаточно прав' });
+    } catch (e) {
+      return res.status(401).json({ error: e.toString() });
+    }
+  },
 };
