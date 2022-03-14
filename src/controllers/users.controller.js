@@ -81,7 +81,7 @@ module.exports.usersController = {
       const question = await Question.findById(req.params.id);
 
       if (!question) {
-        return res.status(400).json({
+        return res.status(404).json({
           message: 'Такого вопроса нет',
         });
       }
@@ -94,7 +94,7 @@ module.exports.usersController = {
       );
       return res.json(user.favorites);
     } catch (e) {
-      return res.json({
+      return res.status(400).json({
         message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
       });
     }
@@ -110,7 +110,7 @@ module.exports.usersController = {
       );
       res.json(user.favorites);
     } catch (e) {
-      res.json({
+      res.status(400).json({
         message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
       });
     }
@@ -135,7 +135,7 @@ module.exports.usersController = {
 
       res.json(user.favorites);
     } catch (e) {
-      res.json({
+      res.status(404).json({
         message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
       });
     }

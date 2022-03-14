@@ -75,13 +75,13 @@ router.post(
 );
 
 router.delete(
-  '/:id/delete',
+  '/:id',
   authMiddleware,
   questionsController.removeQuestion
 );
 
 router.patch(
-  '/:id/restore',
+  '/:id',
   authMiddleware,
   questionsController.restoreQuestion
 );

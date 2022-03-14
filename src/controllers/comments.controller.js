@@ -9,7 +9,7 @@ module.exports.commentsController = {
       const question = await Question.findById(id);
 
       if (!question) {
-        return res.status(400).json({ error: 'такого вопроса не существует' });
+        return res.status(404).json({ error: 'такого вопроса не существует' });
       }
 
       const createdComment = await Comment.create({
@@ -38,7 +38,7 @@ module.exports.commentsController = {
 
       return res.json(comments);
     } catch (e) {
-      return res.status(400).json({ error: e.toString() });
+      return res.status(404).json({ error: e.toString() });
     }
   },
 };
