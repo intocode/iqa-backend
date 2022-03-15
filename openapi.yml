@@ -40,6 +40,8 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '401':
           description: 'Ошибка авторизации'
+        '400':
+          description: 'Неправильный, некорректный запрос'
   /user/favorites/{questionId}:
     post:
       summary: 'Добавление вопроса в избранные'

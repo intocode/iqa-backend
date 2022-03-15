@@ -70,7 +70,7 @@ module.exports.usersController = {
 
       return res.json(profile);
     } catch (e) {
-      return res.status(404).json({ error: e.toString() });
+      return res.status(400).json({ error: e.toString() });
     }
   },
   userCheck: async (req, res) => {
