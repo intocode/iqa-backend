@@ -100,7 +100,7 @@ paths:
       summary: 'Поиск по тэгам'
       parameters:
         - in: query
-          name: search
+          name: q
           schema:
             type: string
           required: true
