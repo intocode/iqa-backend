@@ -28,8 +28,8 @@ module.exports.tagsController = {
   },
   getTags: async (req, res) => {
     try {
-      const query = new RegExp(req.query.q, 'i');
-      const tags = await Tag.find({ name: { $regex: query } });
+      const { search } = req.query;
+      const tags = await Tag.find({ name: { $regex: search } });
 
       return res.json(tags);
     } catch (e) {
