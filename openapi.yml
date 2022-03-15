@@ -40,8 +40,6 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
   /user/favorites/{questionId}:
     post:
       summary: 'Добавление вопроса в избранные'
@@ -95,8 +93,6 @@ paths:
           description: 'Ошибка авторизации'
         '400':
           description: 'Неправильный, некорректный запрос'
-        '404':
-          description: 'Не найдено'
   /tags:
     get:
       summary: 'Поиск по тэгам'
@@ -340,9 +336,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommentData'
-        '404':
-          description: 'Не найдено'
-    post: 
+        '400':
+          description: 'Неправильный, некорректный запрос'
+    post:
       summary: 'Добавление комментарий вопроса'
       parameters:
         - in: path
