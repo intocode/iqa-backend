@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
+const Rate = require('../models/Rate.model');
 
 module.exports.questionsController = {
   addQuestion: async (req, res) => {
@@ -123,33 +124,40 @@ module.exports.questionsController = {
           error: 'Вопрос с таким ID не найден',
         });
       }
-
-      let updated = false;
-      question.rates.forEach((rate, index) => {
-        if (rate.user.toString() === req.user.userId) {
-          if (rate.volume !== volume) {
-            // eslint-disable-next-line no-param-reassign
-            rate.volume = volume;
-          } else {
-            question.rates.splice(index, 1);
-          }
-
-          updated = true;
-        }
+			
+      const checkRate = await Rate.findOne({
+        rateFrom: req.user.userId,
+        ratedQuestion: questionId,
       });
 
-      if (!updated) {
-        question.rates.push({
-          user: req.user.userId,
+      if (!checkRate) {
+        await Rate.create({
+          rateFrom: req.user.userId,
+          rateTo: question.user,
           volume,
+          ratedQuestion: question._id,
         });
+        await Question.findByIdAndUpdate(questionId, {
+          questionRateCount: question.questionRateCount + volume,
+        });
+        return res.json({ message: 'Рейтинг повышен/понижен' });
       }
-
-      await question.save();
-
-      return res.json(question.rates);
+      if (checkRate.volume !== volume) {
+        await Question.findByIdAndUpdate(questionId, {
+          questionRateCount: question.questionRateCount + volume,
+        });
+        await Rate.findOneAndUpdate(
+          {
+            rateFrom: req.user.userId,
+            ratedQuestion: questionId,
+          },
+          { volume }
+        );
+        return res.json({ message: 'Рейтинг повышен/понижен' });
+      }
+      return res.json({ message: 'Рейтинг уже повышен/понижен' });
     } catch (e) {
-      return res.status(401).json({
+      return res.status(400).json({
         error: e.toString(),
       });
     }

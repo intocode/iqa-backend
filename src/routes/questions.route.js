@@ -27,6 +27,12 @@ router.post(
   questionsController.changeRate
 );
 
+router.post(
+  '/:questionId/comments/:commentId/rate',
+  authMiddleware,
+  questionsController.changeRate
+);
+
 router.get('/:id/comments', commentsController.getCommentsByQuestionId);
 
 router.post(
