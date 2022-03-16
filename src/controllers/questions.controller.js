@@ -120,7 +120,7 @@ module.exports.questionsController = {
 
     try {
       const question = await Question.findById(questionId);
-			const comment = await Comment.findById(commentId)
+      const comment = await Comment.findById(commentId);
 
       if (!question) {
         return res.status(404).json({
@@ -138,43 +138,43 @@ module.exports.questionsController = {
       );
 
       if (!checkRate) {
-				if(!commentId){
-					await Rate.create({
-						rateFrom: req.user.userId,
-						rateTo: question.user,
-						volume,
-						ratedQuestion: question._id,
-					});
-					await Question.findByIdAndUpdate(questionId, {
-						questionRateCount: question.questionRateCount + volume,
-					});
-					return res.json({ message: 'Рейтинг повышен/понижен' });
-				}
+        if (!commentId) {
+          await Rate.create({
+            rateFrom: req.user.userId,
+            rateTo: question.user,
+            volume,
+            ratedQuestion: question._id,
+          });
+          await Question.findByIdAndUpdate(questionId, {
+            questionRateCount: question.questionRateCount + volume,
+          });
+          return res.json({ message: 'Рейтинг повышен/понижен' });
+        }
         await Rate.create({
-					rateFrom: req.user.userId,
-					rateTo: comment.author,
-					volume,
-					ratedComment: comment._id,
-				});
-				await Comment.findByIdAndUpdate(commentId, {
-					commentRateCount: comment.commentRateCount + volume,
-				});
-				return res.json({ message: 'Рейтинг повышен/понижен' });
+          rateFrom: req.user.userId,
+          rateTo: comment.author,
+          volume,
+          ratedComment: comment._id,
+        });
+        await Comment.findByIdAndUpdate(commentId, {
+          commentRateCount: comment.commentRateCount + volume,
+        });
+        return res.json({ message: 'Рейтинг повышен/понижен' });
       }
       if (checkRate.volume !== volume) {
-				if(!commentId){
-					await Question.findByIdAndUpdate(questionId, {
-						questionRateCount: question.questionRateCount + volume,
-					});
-					await Rate.findOneAndUpdate(
-						{
-							rateFrom: req.user.userId,
-							ratedQuestion: questionId,
-						},
-						{ volume }
-					);
-					return res.json({ message: 'Рейтинг повышен/понижен' });
-				}
+        if (!commentId) {
+          await Question.findByIdAndUpdate(questionId, {
+            questionRateCount: question.questionRateCount + volume,
+          });
+          await Rate.findOneAndUpdate(
+            {
+              rateFrom: req.user.userId,
+              ratedQuestion: questionId,
+            },
+            { volume }
+          );
+          return res.json({ message: 'Рейтинг повышен/понижен' });
+        }
         await Comment.findByIdAndUpdate(commentId, {
           commentRateCount: comment.commentRateCount + volume,
         });
