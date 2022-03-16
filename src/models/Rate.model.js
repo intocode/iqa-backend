@@ -4,15 +4,15 @@ const rateSchema = mongoose.Schema(
   {
     rateFrom: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      ref: 'User',
     },
     rateTo: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      ref: 'User',
     },
     volume: {
       type: Number,
-      required: true,
+      enum: [-1, 1],
     },
     ratedQuestion: {
       type: mongoose.Schema.Types.ObjectId,
