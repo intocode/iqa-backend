@@ -287,7 +287,7 @@ paths:
           description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/rate:
     post:
-      summary: 'Поднятия рейтинга для вопроса'
+      summary: 'Изменение рейтинга для вопроса'
       parameters:
         - in: path
           name: questionId
@@ -303,10 +303,13 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 volume:
                   type: number
                   example: -1
+              required:
+                - volume
       responses:
         '200':
           description: 'Ответ после запроса на изменение рейтинга вопроса'
@@ -428,10 +431,13 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 volume:
                   type: number
                   example: -1
+              required:
+                - volume
       responses:
         '200':
           description: 'Ответ после запроса на изменение рейтинга комментария'
