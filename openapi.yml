@@ -313,14 +313,39 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  $ref: '#/components/schemas/RateData'
+                properties:
+                  message:
+                    type: string
+                    example: Рейтинг повышен
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
+        '400':
+          description: 'Неправильный, некорректный запрос'
+    delete:
+      summary: 'Удаление оценки для вопроса'
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор вопроса'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Ответ после запроса на удаления оценки вопроса'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Оценка удалена
+        '401':
+          description: 'Ошибка авторизации'
+        '400':
+          description: 'Неправильный, некорректный запрос'
   /questions/{questionId}/comments:
     get:
       summary: 'Вывод комментарий вопроса'
@@ -417,6 +442,37 @@ paths:
                   message:
                     type: string
                     example: Рейтинг повышен
+        '401':
+          description: 'Ошибка авторизации'
+        '400':
+          description: 'Неправильный, некорректный запрос'
+    delete:
+      summary: 'Удаление оценки для комментария'
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор вопроса'
+        - in: path
+          name: commentId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор комментария'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Ответ после запросана удаление оценки комментария'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Оценка удалена
         '401':
           description: 'Ошибка авторизации'
         '400':
@@ -518,7 +574,7 @@ components:
         commentsCount:
           type: number
           example: 0
-        questionRateCount: 
+        questionRateCount:
           type: number
           default: 0
           example: 2
@@ -554,7 +610,7 @@ components:
         questionId:
           type: string
           example: '62029815be7ea76826b79ff4'
-        commentRateCount: 
+        commentRateCount:
           type: number
           default: 0
           example: 2
