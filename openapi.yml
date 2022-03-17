@@ -379,6 +379,48 @@ paths:
           description: 'Неправильный, некорректный запрос'
         '404':
           description: 'Не найдено'
+  /questions/{questionId}/comments/{commentId}/rate:
+    post:
+      summary: 'Поднятия рейтинга для комментария'
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор вопроса'
+        - in: path
+          name: commentId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор комментария'
+      security:
+        - bearerAuth: []
+      description: 'Поднятие/понижение рейтинга комментария'
+      requestBody:
+        description: 'Данные для поднятия/понижения рейтинга комментария'
+        content:
+          application/json:
+            schema:
+              properties:
+                volume:
+                  type: number
+                  example: -1
+      responses:
+        '200':
+          description: 'Ответ после запроса поднятие/понижения рейтинга комментария'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: Рейтинг повышен
+        '401':
+          description: 'Ошибка авторизации'
+        '400':
+          description: 'Неправильный, некорректный запрос'
 components:
   securitySchemes:
     bearerAuth:
@@ -421,15 +463,25 @@ components:
             full: 'https://avatars.githubusercontent.com/u/93570249?v=4'
     RateData:
       properties:
-        user:
-          type: string
-          example: '61e299dfsl3a51al5261e65b'
-        volume:
-          type: number
-          example: -1
         _id:
           type: string
           example: '61e299dfsl3a51al5261e23d'
+
+        rateFrom:
+          type: string
+          example: '61e299dfsl3a51al5261e65b'
+        rateTo:
+          type: string
+          example: '61e395dfsl3a51al5261e39f'
+        volume:
+          type: number
+          example: -1
+        ratedQuestion:
+          type: string
+          example: '61e395dfsl3a51al5261e24a'
+        ratedComment:
+          type: string
+          example: '61e395dfsl3a51al5261e93h'
         createdAt:
           type: string
           example: '2022-01-15T09:54:39.531Z'
@@ -454,11 +506,6 @@ components:
             $ref: '#/components/schemas/TagData'
         user:
           $ref: '#/components/schemas/UserData'
-        rates:
-          type: array
-          items:
-            type: string
-            $ref: '#/components/schemas/RateData'
         createdAt:
           type: string
           example: '2022-01-15T09:54:39.531Z'
@@ -471,6 +518,10 @@ components:
         commentsCount:
           type: number
           example: 0
+        questionRateCount: 
+          type: number
+          default: 0
+          example: 2
     TagData:
       properties:
         _id:
@@ -503,6 +554,10 @@ components:
         questionId:
           type: string
           example: '62029815be7ea76826b79ff4'
+        commentRateCount: 
+          type: number
+          default: 0
+          example: 2
         createdAt:
           type: string
           example: '2022-01-15T09:54:39.531Z'
