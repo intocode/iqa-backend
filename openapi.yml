@@ -297,9 +297,9 @@ paths:
           description: 'Идентификатор вопроса'
       security:
         - bearerAuth: []
-      description: 'Поднятие/понижение рейтинга вопроса'
+      description: 'Изменение рейтинга вопроса'
       requestBody:
-        description: 'Данные для поднятия/понижения рейтинга вопроса'
+        description: 'Данные для изменения рейтинга вопроса'
         content:
           application/json:
             schema:
@@ -309,7 +309,7 @@ paths:
                   example: -1
       responses:
         '200':
-          description: 'Ответ после запроса поднятие/понижения рейтинга вопроса'
+          description: 'Ответ после запроса на изменение рейтинга вопроса'
           content:
             application/json:
               schema:
@@ -406,7 +406,7 @@ paths:
           description: 'Не найдено'
   /questions/{questionId}/comments/{commentId}/rate:
     post:
-      summary: 'Поднятия рейтинга для комментария'
+      summary: 'Изменение рейтинга для комментария'
       parameters:
         - in: path
           name: questionId
@@ -422,9 +422,9 @@ paths:
           description: 'Идентификатор комментария'
       security:
         - bearerAuth: []
-      description: 'Поднятие/понижение рейтинга комментария'
+      description: 'Изменение рейтинга комментария'
       requestBody:
-        description: 'Данные для поднятия/понижения рейтинга комментария'
+        description: 'Данные для изменения рейтинга комментария'
         content:
           application/json:
             schema:
@@ -434,7 +434,7 @@ paths:
                   example: -1
       responses:
         '200':
-          description: 'Ответ после запроса поднятие/понижения рейтинга комментария'
+          description: 'Ответ после запроса на изменение рейтинга комментария'
           content:
             application/json:
               schema:
@@ -465,7 +465,7 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: 'Ответ после запросана удаление оценки комментария'
+          description: 'Ответ после запросана на удаление оценки комментария'
           content:
             application/json:
               schema:
