@@ -29,9 +29,6 @@ module.exports.ratesController = {
             volume,
             ratedQuestion: question._id,
           });
-          await Question.findByIdAndUpdate(questionId, {
-            questionRateCount: question.questionRateCount + volume,
-          });
           return res.json({ message: 'Рейтинг успешно изменён' });
         }
         await Rate.create({
@@ -39,9 +36,6 @@ module.exports.ratesController = {
           rateTo: comment.author,
           volume,
           ratedComment: comment._id,
-        });
-        await Comment.findByIdAndUpdate(commentId, {
-          commentRateCount: comment.commentRateCount + volume,
         });
         return res.json({ message: 'Рейтинг успешно изменён' });
       }
