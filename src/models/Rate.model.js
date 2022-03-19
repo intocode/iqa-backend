@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Question = require('./Question.model');
+const Comment = require('./Comment.model');
 
 const rateSchema = mongoose.Schema(
   {
@@ -25,6 +27,22 @@ const rateSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// eslint-disable-next-line func-names
+rateSchema.pre('save', async function (next) {
+  await Question.findByIdAndUpdate(this.ratedQuestion.toString(), {
+    questionRateCount: +this.volume,
+  });
+  next();
+});
+
+// eslint-disable-next-line func-names
+rateSchema.pre('save', async function (next) {
+  await Comment.findByIdAndUpdate(this.ratedComment.toString(), {
+    commentRateCount: +this.volume,
+  });
+  next();
+});
 
 const Rate = mongoose.model('Rate', rateSchema);
 

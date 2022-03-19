@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { questionsController } = require('../controllers/questions.controller');
 const { commentsController } = require('../controllers/comments.controller');
+const { ratesController } = require('../controllers/rates.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
@@ -21,10 +22,20 @@ router.post(
   questionsController.addQuestion
 );
 
+router.post('/:questionId/rate', authMiddleware, ratesController.changeRate);
+
 router.post(
-  '/:questionId/rate',
+  '/:questionId/comments/:commentId/rate',
   authMiddleware,
-  questionsController.changeRate
+  ratesController.changeRate
+);
+
+router.delete('/:questionId/rate', authMiddleware, ratesController.deleteRate);
+
+router.delete(
+  '/:questionId/comments/:commentId/rate',
+  authMiddleware,
+  ratesController.deleteRate
 );
 
 router.get('/:id/comments', commentsController.getCommentsByQuestionId);
