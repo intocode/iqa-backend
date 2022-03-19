@@ -1,8 +1,6 @@
 const { validationResult } = require('express-validator');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
-const Rate = require('../models/Rate.model');
-const Comment = require('../models/Comment.model');
 
 module.exports.questionsController = {
   addQuestion: async (req, res) => {
@@ -111,87 +109,6 @@ module.exports.questionsController = {
       return res.json({ error: 'У вас недостаточно прав' });
     } catch (e) {
       return res.status(401).json({ error: e.toString() });
-    }
-  },
-  changeRate: async (req, res) => {
-    const { volume } = req.body;
-    const { questionId } = req.params;
-    const { commentId } = req.params;
-
-    try {
-      const question = await Question.findById(questionId);
-      const comment = await Comment.findById(commentId);
-
-      if (!question) {
-        return res.status(404).json({
-          error: 'Вопрос с таким ID не найден',
-        });
-      }
-
-      const checkRate = await Rate.findOne(
-        commentId
-          ? { rateFrom: req.user.userId, ratedComment: commentId }
-          : {
-              rateFrom: req.user.userId,
-              ratedQuestion: questionId,
-            }
-      );
-
-      if (!checkRate) {
-        if (!commentId) {
-          await Rate.create({
-            rateFrom: req.user.userId,
-            rateTo: question.user,
-            volume,
-            ratedQuestion: question._id,
-          });
-          await Question.findByIdAndUpdate(questionId, {
-            questionRateCount: question.questionRateCount + volume,
-          });
-          return res.json({ message: 'Рейтинг повышен/понижен' });
-        }
-        await Rate.create({
-          rateFrom: req.user.userId,
-          rateTo: comment.author,
-          volume,
-          ratedComment: comment._id,
-        });
-        await Comment.findByIdAndUpdate(commentId, {
-          commentRateCount: comment.commentRateCount + volume,
-        });
-        return res.json({ message: 'Рейтинг повышен/понижен' });
-      }
-      if (checkRate.volume !== volume) {
-        if (!commentId) {
-          await Question.findByIdAndUpdate(questionId, {
-            questionRateCount: question.questionRateCount + volume,
-          });
-          await Rate.findOneAndUpdate(
-            {
-              rateFrom: req.user.userId,
-              ratedQuestion: questionId,
-            },
-            { volume }
-          );
-          return res.json({ message: 'Рейтинг повышен/понижен' });
-        }
-        await Comment.findByIdAndUpdate(commentId, {
-          commentRateCount: comment.commentRateCount + volume,
-        });
-        await Rate.findOneAndUpdate(
-          {
-            rateFrom: req.user.userId,
-            ratedComment: commentId,
-          },
-          { volume }
-        );
-        return res.json({ message: 'Рейтинг повышен/понижен' });
-      }
-      return res.json({ message: 'Рейтинг уже повышен/понижен' });
-    } catch (e) {
-      return res.status(400).json({
-        error: e.toString(),
-      });
     }
   },
 };
