@@ -111,7 +111,7 @@ module.exports.usersController = {
       res.json(user.favorites);
     } catch (e) {
       res.status(400).json({
-        message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
+        message: `Ошибка при удалении вопроса из избранных:${e.toString()}`,
       });
     }
   },

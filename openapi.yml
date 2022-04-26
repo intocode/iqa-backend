@@ -25,8 +25,8 @@ paths:
                 $ref: '#/components/schemas/UserData'
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
+        '400':
+          description: 'Неправильный, некорректный запрос'
   /user/favorites:
     get:
       security:
