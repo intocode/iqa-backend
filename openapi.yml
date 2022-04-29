@@ -25,8 +25,8 @@ paths:
                 $ref: '#/components/schemas/UserData'
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
+        '400':
+          description: 'Некорректный запрос'
   /user/favorites:
     get:
       security:
@@ -41,7 +41,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /user/favorites/{questionId}:
     post:
       summary: 'Добавление вопроса в избранные'
@@ -67,7 +67,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
         '404':
           description: 'Не найдено'
     delete:
@@ -94,7 +94,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /tags:
     get:
       summary: 'Поиск по тэгам'
@@ -118,7 +118,7 @@ paths:
                   type: string
                   $ref: '#/components/schemas/TagData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     post:
       security:
         - bearerAuth: []
@@ -148,7 +148,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions:
     get:
       summary: 'Поиск по вопросам'
@@ -170,7 +170,7 @@ paths:
                   type: string
                   $ref: '#/components/schemas/QuestionData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     post:
       security:
         - bearerAuth: []
@@ -211,7 +211,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions/{questionId}:
     get:
       summary: 'Вывод вопроса'
@@ -230,7 +230,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuestionData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     delete:
       summary: 'Удаление вопроса'
       parameters:
@@ -257,7 +257,7 @@ paths:
         '403':
           description: 'Недостаточно прав доступа'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     patch:
       summary: 'Восстановление вопроса'
       parameters:
@@ -284,7 +284,7 @@ paths:
         '403':
           description: 'Недостаточно прав доступа'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions/{questionId}/rate:
     post:
       summary: 'Изменение рейтинга для вопроса'
@@ -323,7 +323,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     delete:
       summary: 'Удаление оценки для вопроса'
       parameters:
@@ -348,7 +348,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions/{questionId}/comments:
     get:
       summary: 'Вывод комментарий вопроса'
@@ -367,7 +367,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommentData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     post:
       summary: 'Добавление комментарий вопроса'
       parameters:
@@ -404,7 +404,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
         '404':
           description: 'Не найдено'
   /questions/{questionId}/comments/{commentId}/rate:
@@ -451,7 +451,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     delete:
       summary: 'Удаление оценки для комментария'
       parameters:
@@ -482,7 +482,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
 components:
   securitySchemes:
     bearerAuth:
