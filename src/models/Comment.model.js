@@ -17,10 +17,6 @@ const commentSchema = Schema(
       ref: 'Question',
       required: true,
     },
-    commentRateCount: {
-      type: Number,
-      default: 0,
-    },
   },
   { timestamps: true }
 );

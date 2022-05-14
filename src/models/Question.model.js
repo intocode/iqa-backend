@@ -1,5 +1,18 @@
 const { Schema, model } = require('mongoose');
 
+const rateSchema = Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+    },
+    volume: {
+      type: Number,
+      enum: [-1, 1],
+    },
+  },
+  { timestamps: true }
+);
+
 const questionSchema = Schema(
   {
     question: {
@@ -19,10 +32,7 @@ const questionSchema = Schema(
       type: Number,
       default: 0,
     },
-    questionRateCount: {
-      type: Number,
-      default: 0,
-    },
+    rates: [rateSchema],
     deleted: {
       type: Boolean,
       default: false,
