@@ -29,11 +29,6 @@ module.exports.tagsController = {
   getTags: async (req, res) => {
     try {
       const query = new RegExp(req.query.q, 'i');
-
-      if (!req.query.q) {
-        return res.status(400).json({ message: 'Bad Request' });
-      }
-
       const tags = await Tag.find({ name: { $regex: query } });
 
       return res.json(tags);

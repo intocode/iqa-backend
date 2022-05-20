@@ -2,8 +2,8 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { questionsController } = require('../controllers/questions.controller');
 const { commentsController } = require('../controllers/comments.controller');
-const { ratesController } = require('../controllers/rates.controlle');
 const authMiddleware = require('../middlewares/auth.middleware');
+const Question = require('../models/Question.model');
 
 const router = Router();
 
@@ -22,21 +22,49 @@ router.post(
   questionsController.addQuestion
 );
 
-router.post('/:questionId/rate', authMiddleware, ratesController.changeRate);
+router.post('/:questionId/rate', authMiddleware, async (req, res) => {
+  const { volume } = req.body;
+  const { questionId } = req.params;
 
-router.post(
-  '/:questionId/comments/:commentId/rate',
-  authMiddleware,
-  ratesController.changeRate
-);
+  try {
+    const question = await Question.findById(questionId);
 
-router.delete('/:questionId/rate', authMiddleware, ratesController.deleteRate);
+    if (!question) {
+      return res.status(404).json({
+        error: 'Вопрос с таким ID не найден',
+      });
+    }
 
-router.delete(
-  '/:questionId/comments/:commentId/rate',
-  authMiddleware,
-  ratesController.deleteRate
-);
+    let updated = false;
+    question.rates.forEach((rate, index) => {
+      if (rate.user.toString() === req.user.userId) {
+        if (rate.volume !== volume) {
+          // eslint-disable-next-line no-param-reassign
+          rate.volume = volume;
+        } else {
+          question.rates.splice(index, 1);
+        }
+
+        updated = true;
+      }
+    });
+
+    if (!updated) {
+      question.rates.push({
+        user: req.user.userId,
+        volume,
+      });
+    }
+
+    await question.save();
+
+    return res.json(question.rates);
+  } catch (e) {
+    return res.status(401).json({
+      error: e.toString(),
+    });
+  }
+});
 
 router.get('/:id/comments', commentsController.getCommentsByQuestionId);
 
@@ -46,8 +74,16 @@ router.post(
   commentsController.addCommentToPost
 );
 
-router.delete('/:id', authMiddleware, questionsController.removeQuestion);
+router.delete(
+  '/:id/delete',
+  authMiddleware,
+  questionsController.removeQuestion
+);
 
-router.patch('/:id', authMiddleware, questionsController.restoreQuestion);
+router.patch(
+  '/:id/restore',
+  authMiddleware,
+  questionsController.restoreQuestion
+);
 
 module.exports = router;

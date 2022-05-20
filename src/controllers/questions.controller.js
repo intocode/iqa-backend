@@ -68,7 +68,7 @@ module.exports.questionsController = {
         return res.json({ message: 'Question deleted' });
       }
 
-      return res.status(403).json({ error: 'У вас недостаточно прав' });
+      return res.json({ error: 'У вас недостаточно прав' });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
@@ -87,7 +87,7 @@ module.exports.questionsController = {
         return res.json({ message: 'Question restored' });
       }
 
-      return res.status(403).json({ error: 'У вас недостаточно прав' });
+      return res.json({ error: 'У вас недостаточно прав' });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
