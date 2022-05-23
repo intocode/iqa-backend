@@ -7,7 +7,7 @@ info:
     name: admin
     email: admin@intocode.ru
 servers:
-  - url: 'https://iqa-backend.herokuapp.com'
+  - url: 'https://iqa-stage-backend.intocode.ru'
     description: Staging server
   - url: 'http://localhost:3030'
     description: Local server
@@ -25,8 +25,8 @@ paths:
                 $ref: '#/components/schemas/UserData'
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
+        '400':
+          description: 'Некорректный запрос'
   /user/favorites:
     get:
       security:
@@ -40,8 +40,8 @@ paths:
                 $ref: '#/components/schemas/QuestionData'
         '401':
           description: 'Ошибка авторизации'
-        '404':
-          description: 'Не найдено'
+        '400':
+          description: 'Некорректный запрос'
   /user/favorites/{questionId}:
     post:
       summary: 'Добавление вопроса в избранные'
@@ -67,7 +67,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
         '404':
           description: 'Не найдено'
     delete:
@@ -94,15 +94,13 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
-        '404':
-          description: 'Не найдено'
+          description: 'Некорректный запрос'
   /tags:
     get:
       summary: 'Поиск по тэгам'
       parameters:
         - in: query
-          name: search
+          name: q
           schema:
             type: string
           required: true
@@ -120,7 +118,7 @@ paths:
                   type: string
                   $ref: '#/components/schemas/TagData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     post:
       security:
         - bearerAuth: []
@@ -150,7 +148,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /tags/{tagId}/questions:
     get:
       summary: 'Поиск вопросов по тэгам'
@@ -194,7 +192,7 @@ paths:
                   type: string
                   $ref: '#/components/schemas/QuestionData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     post:
       security:
         - bearerAuth: []
@@ -235,7 +233,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions/{questionId}:
     get:
       summary: 'Вывод вопроса'
@@ -254,7 +252,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/QuestionData'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     delete:
       summary: 'Удаление вопроса'
       parameters:
@@ -281,7 +279,7 @@ paths:
         '403':
           description: 'Недостаточно прав доступа'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
     patch:
       summary: 'Восстановление вопроса'
       parameters:
@@ -308,7 +306,7 @@ paths:
         '403':
           description: 'Недостаточно прав доступа'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
   /questions/{questionId}/rate:
     post:
       summary: 'Поднятия рейтинга для вопроса'
@@ -362,9 +360,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommentData'
-        '404':
-          description: 'Не найдено'
-    post: 
+        '400':
+          description: 'Некорректный запрос'
+    post:
       summary: 'Добавление комментарий вопроса'
       parameters:
         - in: path
@@ -400,7 +398,7 @@ paths:
         '401':
           description: 'Ошибка авторизации'
         '400':
-          description: 'Неправильный, некорректный запрос'
+          description: 'Некорректный запрос'
         '404':
           description: 'Не найдено'
 components:
