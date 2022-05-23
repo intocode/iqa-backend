@@ -151,6 +151,28 @@ paths:
           description: 'Ошибка авторизации'
         '400':
           description: 'Неправильный, некорректный запрос'
+  /tags/{tagId}/questions:
+    get:
+      summary: 'Поиск вопросов по тэгам'
+      parameters:
+        - in: path
+          name: tagId
+          schema:
+            type: string
+          required: true
+          description: 'Идентификатор тэга'
+      responses:
+        '200':
+          description: 'Вывод вопросов по определенному тэгу'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  $ref: '#/components/schemas/QuestionData'
+        '400':
+          description: 'Некорректный запрос'
   /questions:
     get:
       summary: 'Поиск по вопросам'
