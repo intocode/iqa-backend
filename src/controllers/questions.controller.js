@@ -55,6 +55,17 @@ module.exports.questionsController = {
       return res.status(400).json({ error: e.toString() });
     }
   },
+  getQuestionsByTag: async (req, res) => {
+    try {
+      const { tagId } = req.params;
+
+      const questions = await Question.find({ tags: tagId });
+
+      return res.json(questions);
+    } catch (e) {
+      return res.status(400).json({ error: e.toString() });
+    }
+  },
   removeQuestion: async (req, res) => {
     try {
       const { id } = req.params;
