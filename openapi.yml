@@ -151,12 +151,12 @@ paths:
           description: 'Ошибка авторизации'
         '400':
           description: 'Неправильный, некорректный запрос'
-  /tags/{tagsId}/questions:
+  /tags/{tagId}/questions:
     get:
       summary: 'Поиск вопросов по тэгам'
       parameters:
         - in: path
-          name: tagsId
+          name: tagId
           schema:
             type: string
           required: true
