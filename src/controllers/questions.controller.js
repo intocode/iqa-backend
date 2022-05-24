@@ -19,7 +19,7 @@ module.exports.questionsController = {
       });
 
       const question = await Question.findById(createdQuestion._id)
-        .populate('tags', { _id: 0, name: 1, color: 1 })
+        .populate('tags', { _id: 1, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
 
       return res.json({ message: 'Question created', question });
@@ -33,7 +33,7 @@ module.exports.questionsController = {
 
       if (id) {
         const question = await Question.findById(id)
-          .populate('tags', { _id: 0, name: 1, color: 1 })
+          .populate('tags', { _id: 1, name: 1, color: 1 })
           .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
 
         return res.json(question);
@@ -47,7 +47,7 @@ module.exports.questionsController = {
       }
 
       const allQuestions = await Question.find({ deleted: { $ne: true } })
-        .populate('tags', { _id: 0, name: 1, color: 1 })
+        .populate('tags', { _id: 1, name: 1, color: 1 })
         .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
 
       return res.json(allQuestions);
