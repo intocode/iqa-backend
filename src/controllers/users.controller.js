@@ -68,7 +68,9 @@ module.exports.usersController = {
     try {
       const profile = await User.findById(req.user.userId);
 
-      return res.json(profile);
+      const favoritesAmount = profile.favorites.length;
+
+      return res.json({ profile, favoritesAmount });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
