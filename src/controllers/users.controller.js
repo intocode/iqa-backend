@@ -70,7 +70,7 @@ module.exports.usersController = {
 
       const favoritesCounter = profile.favorites.length
 
-      return res.json({ profile, favoritesCounter });
+      return res.json({ ...profile,  favoritesCounter });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
