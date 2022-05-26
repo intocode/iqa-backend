@@ -68,9 +68,7 @@ module.exports.usersController = {
     try {
       const profile = await User.findById(req.user.userId);
 
-      const favoritesCounter = await Question.countDocuments({
-        _id: profile.favorites,
-      });
+      const favoritesCounter = profile.favorites.length
 
       return res.json({ profile, favoritesCounter });
     } catch (e) {
