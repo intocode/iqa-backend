@@ -66,7 +66,7 @@ module.exports.usersController = {
   },
   getMyProfile: async (req, res) => {
     try {
-      const profile = await User.findById(req.user.userId);
+      const profile = await User.findById(req.user.userId).lean();
 
       const favoritesCounter = profile.favorites.length;
 
