@@ -66,9 +66,9 @@ module.exports.usersController = {
   },
   getMyProfile: async (req, res) => {
     try {
-      const profile = await User.findById(req.user.userId).lean();
+      const profile = await User.findById(req.user.userId);
 
-      return res.json({ ...profile });
+      return res.json(profile);
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
