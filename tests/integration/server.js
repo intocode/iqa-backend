@@ -23,8 +23,11 @@ describe('routes', () => {
       .expect((res) => {
         const { body } = res;
 
-        expect(body).toBeInstanceOf(Array);
-        expect(Object.keys(body[0])).toEqual(
+        expect(body).toBeInstanceOf(Object);
+
+        expect(body.total).toBeInstanceOf(Number);
+        
+        expect(Object.keys(body.items[0])).toEqual(
           expect.arrayContaining([
             '_id',
             'question',
