@@ -59,7 +59,9 @@ module.exports.questionsController = {
     try {
       const { tagId } = req.params;
 
-      const questions = await Question.find({ tags: tagId });
+      const questions = await Question.find({ tags: tagId })
+        .populate('tags', { _id: 1, name: 1, color: 1 })
+        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
 
       return res.json(questions);
     } catch (e) {
