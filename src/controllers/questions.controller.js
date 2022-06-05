@@ -56,8 +56,10 @@ module.exports.questionsController = {
         limit = 20;
       }
 
-      if (limit > Number(process.env.QUESTION_PAGINATION_LIMIT)) {
-        limit = Number(process.env.QUESTION_PAGINATION_LIMIT);
+      const maxLimit = Number(process.env.QUESTION_PAGINATION_LIMIT);
+
+      if (limit > maxLimit) {
+        limit = maxLimit;
       }
 
       const limitedQuestions = await Question.find({ deleted: { $ne: true } })
