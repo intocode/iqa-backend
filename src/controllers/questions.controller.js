@@ -57,20 +57,20 @@ module.exports.questionsController = {
       }
 
       if (limit > Number(process.env.QUESTION_PAGINATION_LIMIT)) {
-        limit = process.env.QUESTION_PAGINATION_LIMIT;
+        limit = Number(process.env.QUESTION_PAGINATION_LIMIT);
       }
 
       const limitedQuestions = await Question.find({ deleted: { $ne: true } })
         .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 })
+        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }) // fix avatarUrl: 1
         .limit(Number(limit))
         .skip(offset);
 
-      const allQuestions = await Question.find({ deleted: { $ne: true } })
-        .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
+      const allQuestions = await Question.countDocuments({
+        deleted: { $ne: true },
+      });
 
-      return res.json({ total: allQuestions.length, items: limitedQuestions });
+      return res.json({ total: allQuestions, items: limitedQuestions });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
