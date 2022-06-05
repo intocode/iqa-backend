@@ -46,11 +46,33 @@ module.exports.questionsController = {
         return res.json(question);
       }
 
-      const allQuestions = await Question.find({ deleted: { $ne: true } })
-        .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }); // fix avatarUrl: 1
+      let { offset, limit } = req.query;
 
-      return res.json(allQuestions);
+      if (!offset || offset < 0) {
+        offset = 0;
+      }
+
+      if (!limit) {
+        limit = 20;
+      }
+
+      const maxLimit = Number(process.env.QUESTION_PAGINATION_LIMIT);
+
+      if (limit > maxLimit) {
+        limit = maxLimit;
+      }
+
+      const limitedQuestions = await Question.find({ deleted: { $ne: true } })
+        .populate('tags', { _id: 1, name: 1, color: 1 })
+        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }) // fix avatarUrl: 1
+        .limit(Number(limit))
+        .skip(offset);
+
+      const allQuestions = await Question.countDocuments({
+        deleted: { $ne: true },
+      });
+
+      return res.json({ total: allQuestions, items: limitedQuestions });
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }

@@ -25,8 +25,6 @@ describe('routes', () => {
 
         expect(body).toBeInstanceOf(Object);
 
-        expect(body.total).toBeInstanceOf(Number);
-        
         expect(Object.keys(body.items[0])).toEqual(
           expect.arrayContaining([
             '_id',
