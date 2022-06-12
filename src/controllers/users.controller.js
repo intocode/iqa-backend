@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User.model');
 const Question = require('../models/Question.model');
+const User = require('../models/User.model');
+const { catchError } = require('../utils/catchError');
 
 const { JWT_SECRET_KEY, JWT_EXPIRES_IN } = process.env;
 
@@ -46,6 +47,7 @@ module.exports.usersController = {
       res.status(400).json({ error: e.toString() });
     }
   },
+
   authFailure: (req, res) => {
     res.send(`
         <!doctype html>
@@ -64,80 +66,27 @@ module.exports.usersController = {
         </html>
       `);
   },
-  getMyProfile: async (req, res) => {
-    try {
-      const profile = await User.findById(req.user.userId);
 
-      return res.json(profile);
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
+  getMyProfile: catchError(async (req, res) => {
+    const profile = await User.findById(req.user.userId);
+
+    const questionsThatUserFavorite = await Question.find(
+      {
+        usersThatFavoriteIt: profile._id,
+      },
+      {
+        _id: 1,
+      }
+    );
+
+    const questionIdsThatUserFavorite = questionsThatUserFavorite.map(
+      (question) => question._id
+    );
+
+    return res.json({ ...profile.toJSON(), questionIdsThatUserFavorite });
+  }),
+
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
-  },
-  addQuestionToFavorites: async (req, res) => {
-    try {
-      const question = await Question.findById(req.params.id);
-
-      if (!question) {
-        return res.status(400).json({
-          message: 'Такого вопроса нет',
-        });
-      }
-      const user = await User.findByIdAndUpdate(
-        req.user.userId,
-        {
-          $addToSet: { favorites: req.params.id },
-        },
-        { new: true }
-      );
-      return res.json(user.favorites);
-    } catch (e) {
-      return res.json({
-        message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
-      });
-    }
-  },
-  deleteQuestionInFavorites: async (req, res) => {
-    try {
-      const user = await User.findByIdAndUpdate(
-        req.user.userId,
-        {
-          $pull: { favorites: req.params.id },
-        },
-        { new: true }
-      );
-      res.json(user.favorites);
-    } catch (e) {
-      res.json({
-        message: `Ошибка при добавлении вопроса в избранные:${e.toString()}`,
-      });
-    }
-  },
-  getFavoritesByUser: async (req, res) => {
-    try {
-      const user = await User.findById(req.user.userId, {
-        favorites: 1,
-      }).populate({
-        path: 'favorites',
-        populate: [
-          {
-            path: 'user',
-            model: 'User',
-          },
-          {
-            path: 'tags',
-            model: 'Tag',
-          },
-        ],
-      });
-
-      res.json(user.favorites);
-    } catch (e) {
-      res.json({
-        message: `Ошибка при выводе избранных вопросов:${e.toString()}`,
-      });
-    }
   },
 };
