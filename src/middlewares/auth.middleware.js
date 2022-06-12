@@ -1,23 +1,16 @@
-const jwt = require('jsonwebtoken');
+const { getAuthInfo } = require('../services/user.service');
+const ApiError = require('../utils/ApiError.class');
+const { catchError } = require('../utils/catchError');
 
-module.exports = async (req, res, next) => {
+module.exports = catchError(async (req, res, next) => {
   const { authorization } = req.headers;
-
-  try {
-    if (!authorization) {
-      throw new Error('authorization request');
-    }
-
-    const [type, token] = authorization.split(' ');
-
-    if (type !== 'Bearer') {
-      throw new Error("wrong token's type");
-    }
-
-    req.user = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    return next();
-  } catch (e) {
-    return res.status(401).json({ error: e.toString() });
+  if (!authorization) {
+    throw new ApiError('"authorization" header required', 401);
   }
-};
+
+  const authPayload = await getAuthInfo(authorization);
+
+  req.user = authPayload;
+
+  return next();
+});

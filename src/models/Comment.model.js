@@ -7,11 +7,13 @@ const commentSchema = Schema(
       type: String,
       required: true,
     },
+
     author: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
+
     questionId: {
       type: Schema.Types.ObjectId,
       ref: 'Question',
@@ -21,8 +23,7 @@ const commentSchema = Schema(
   { timestamps: true }
 );
 
-// eslint-disable-next-line func-names
-commentSchema.pre('save', async function (next) {
+commentSchema.pre('save', async function updateCommentsCounter(next) {
   await Question.findByIdAndUpdate(this.questionId.toString(), {
     $inc: { commentsCount: +1 },
   });

@@ -29,12 +29,10 @@ describe('routes', () => {
           expect.arrayContaining([
             '_id',
             'question',
-            'comment',
-            'tags',
-            'user',
+            'commentsCount',
+            'author',
             'createdAt',
             'updatedAt',
-            'rates',
           ])
         );
       });
@@ -51,4 +49,18 @@ describe('routes', () => {
         expect(body).toHaveProperty('error');
       });
   });
+
+  it('must return only one item', async () => {
+    await request(app)
+      .get('/questions/?limit=1')
+      .expect('Content-type', /json/)
+      .expect(200)
+      .expect((res) => {
+        const { body } = res;
+
+        expect(body).toBeInstanceOf(Object);
+
+        expect(body.items.length).toBe(1)
+      });
+  })
 });

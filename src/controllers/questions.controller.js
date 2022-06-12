@@ -1,152 +1,152 @@
-const { validationResult } = require('express-validator');
-const Question = require('../models/Question.model');
 const User = require('../models/User.model');
+const { catchError } = require('../utils/catchError');
+const { getAuthInfo } = require('../services/user.service');
+const {
+  getQuestions,
+  addQuestion,
+  getQuestion,
+  deleteQuestionById,
+  restoreQuestionById,
+  addQuestionToUserFavorites,
+  removeQuestionFromUserFavorites,
+} = require('../services/questions.service');
+const ApiError = require('../utils/ApiError.class');
 
-module.exports.questionsController = {
-  addQuestion: async (req, res) => {
-    try {
-      const errors = validationResult(req);
+const getQuestionsController = catchError(async (req, res) => {
+  const { query } = req;
+  const { QUESTIONS_PER_PAGE, MAX_QUESTIONS_PER_PAGE } = process.env;
 
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ message: 'Error', errors });
-      }
+  // допустимые поля для фильтрации
+  const { tag, search } = query;
+  const deletedOnly = !!query.deletedOnly;
+  const favoritesOnly = !!query.favoritesOnly;
 
-      const createdQuestion = await Question.create({
-        question: req.body.question,
-        comment: req.body.comment,
-        tags: req.body.tags,
-        user: req.user.userId,
-      });
+  let limit = Math.abs(Number(query.limit || QUESTIONS_PER_PAGE));
+  const offset = Number(query.offset || 0);
 
-      const question = await Question.findById(createdQuestion._id)
-        .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
+  const maxLimit = Number(MAX_QUESTIONS_PER_PAGE);
 
-      return res.json({ message: 'Question created', question });
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
+  if (limit > maxLimit) {
+    limit = maxLimit;
+  }
+
+  const options = {
+    limit,
+    offset,
+  };
+
+  // если указан favoritesOnly, то пользователь должен быть авторизован, нужен его id
+  if (favoritesOnly) {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      throw new Error(
+        'Для использования флага favoritesOnly нужно быть авторизованным'
+      );
     }
-  },
-  getQuestions: async (req, res) => {
-    try {
-      const { id } = req.params;
 
-      if (id) {
-        const question = await Question.findById(id)
-          .populate('tags', { _id: 1, name: 1, color: 1 })
-          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
+    options.user = await getAuthInfo(authorization);
+  }
 
-        return res.json(question);
-      }
+  const { total, items } = await getQuestions(
+    {
+      tag,
+      search,
+      deletedOnly,
+      favoritesOnly,
+    },
+    options
+  );
 
-      const { search } = req.query;
+  return res.json({ total, items });
+});
 
-      if (search) {
-        const question = await Question.find({ $text: { $search: search } });
-        return res.json(question);
-      }
+const addQuestionController = catchError(async (req, res) => {
+  const { question, comment, tags } = req.body;
+  const author = req.user.userId;
 
-      let { offset, limit } = req.query;
+  const createdQuestion = await addQuestion({
+    question,
+    comment,
+    tags,
+    author,
+  });
 
-      if (!offset || offset < 0) {
-        offset = 0;
-      }
+  const questionToResponse = await getQuestion({ _id: createdQuestion._id });
 
-      if (!limit) {
-        limit = 20;
-      }
+  return res.json({ question: questionToResponse });
+});
 
-      const maxLimit = Number(process.env.QUESTION_PAGINATION_LIMIT);
+const getQuestionByIdController = catchError(async (req, res) => {
+  const { _id } = req.params;
+  const question = await getQuestion({ _id });
 
-      if (limit > maxLimit) {
-        limit = maxLimit;
-      }
+  return res.json(question);
+});
 
-      const limitedQuestions = await Question.find({ deleted: { $ne: true } })
-        .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 }) // fix avatarUrl: 1
-        .limit(Number(limit))
-        .skip(offset);
+const deleteQuestionController = catchError(async (req, res) => {
+  // ID удаляемого вопроса
+  const { id } = req.params;
 
-      const allQuestions = await Question.countDocuments({
-        deleted: { $ne: true },
-      });
+  // ID текущего юзера
+  const { userId } = req.user;
 
-      return res.json({ total: allQuestions, items: limitedQuestions });
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
-  getQuestionsByTag: async (req, res) => {
-    try {
-      const { tagId } = req.params;
+  // Нужно проверить есть права у текущего пользователя
+  const user = await User.findById(userId);
 
-      const questions = await Question.find({
-        tags: tagId,
-        deleted: { $ne: true },
-      })
-        .populate('tags', { _id: 1, name: 1, color: 1 })
-        .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
+  if (user.isAdmin) {
+    await deleteQuestionById(id);
 
-      return res.json(questions);
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
-  removeQuestion: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { userId } = req.user;
+    return res.json({ message: 'Вопрос удален' });
+  }
 
-      const user = await User.findById(userId);
+  // если не удалось удалить
+  throw new ApiError('У вас недостаточно прав для удаления', 403);
+});
 
-      if (user.isAdmin) {
-        await Question.findByIdAndUpdate(id, { $set: { deleted: true } });
+const restoreQuestionController = catchError(async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.user;
 
-        return res.json({ message: 'Question deleted' });
-      }
+  const user = await User.findById(userId);
 
-      return res.json({ error: 'У вас недостаточно прав' });
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
+  if (user.isAdmin) {
+    await restoreQuestionById(id, { $set: { deleted: 'false' } });
 
-  restoreQuestion: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { userId } = req.user;
+    return res.json({ message: 'Вопрос возвращен из корзины' });
+  }
 
-      const user = await User.findById(userId);
+  throw new ApiError('У вас недостаточно прав для этой операции', 403);
+});
 
-      if (user.isAdmin) {
-        await Question.findByIdAndUpdate(id, { $set: { deleted: 'false' } });
+const addQuestionToFavoritesController = catchError(async (req, res) => {
+  const questionId = req.params.id;
+  const { userId } = req.user;
 
-        return res.json({ message: 'Question restored' });
-      }
+  await addQuestionToUserFavorites(questionId, userId);
 
-      return res.json({ error: 'У вас недостаточно прав' });
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
-  getRemovedQuestions: async (req, res) => {
-    try {
-      const { userId } = req.user;
+  res.json({
+    message: 'Вопрос добавлен в избранные',
+  });
+});
 
-      const user = await User.findById(userId);
+const removeQuestionFromFavoritesController = catchError(async (req, res) => {
+  const questionId = req.params.id;
+  const { userId } = req.user;
 
-      if (user.isAdmin) {
-        const questions = await Question.find({ deleted: true })
-          .populate('tags', { _id: 1, name: 1, color: 1 })
-          .populate('user', { name: 1, githubId: 1, avatarUrl: 1 });
+  await removeQuestionFromUserFavorites(questionId, userId);
 
-        return res.json(questions);
-      }
+  res.json({
+    message: 'Вопрос удален из избранных',
+  });
+});
 
-      return res.json({ error: 'У вас недостаточно прав' });
-    } catch (e) {
-      return res.status(401).json({ error: e.toString() });
-    }
-  },
+module.exports = {
+  getQuestionsController,
+  addQuestionController,
+  getQuestionByIdController,
+  deleteQuestionController,
+  restoreQuestionController,
+  addQuestionToFavoritesController,
+  removeQuestionFromFavoritesController,
 };
