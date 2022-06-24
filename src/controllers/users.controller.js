@@ -79,9 +79,7 @@ module.exports.usersController = {
       }
     );
 
-    const questionIdsThatUserFavorite = questionsThatUserFavorite.map(
-      (question) => question._id
-    );
+    const questionIdsThatUserFavorite = questionsThatUserFavorite.map((question) => question._id);
 
     return res.json({ ...profile.toJSON(), questionIdsThatUserFavorite });
   }),

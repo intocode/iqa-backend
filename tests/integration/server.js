@@ -9,10 +9,7 @@ afterAll(() => mongoose.disconnect());
 
 describe('routes', () => {
   it('must response with `hi`', async () => {
-    await request(app)
-      .get('/')
-      .expect('Content-type', /json/)
-      .expect(200, /hi/);
+    await request(app).get('/').expect('Content-type', /json/).expect(200, /hi/);
   });
 
   it('must recieve array of questions', async () => {
@@ -60,7 +57,7 @@ describe('routes', () => {
 
         expect(body).toBeInstanceOf(Object);
 
-        expect(body.items.length).toBe(1)
+        expect(body.items.length).toBe(1);
       });
-  })
+  });
 });

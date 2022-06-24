@@ -10,11 +10,12 @@
     "start": "node src/server",
     "dev": "nodemon ./src/server -q",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0 --ext .js",
-    "prettier": "prettier --write ./src",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier . --check",
     "prepare": "husky install",
     "test": "jest",
     "tdd": "jest --watchAll",
-    "check": "npm run lint && npm run test",
+    "check": "npm run prettier:check && npm run lint && npm run test",
     "ucc": "node src/scripts/updateCommentsCounter.js"
   },
   "repository": {

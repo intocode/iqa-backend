@@ -32,7 +32,7 @@ const userSchema = mongoose.Schema(
 
 userSchema.virtual('avatar').get(function getAvatar() {
   return {
-    thumbnail: `${this.avatarUrl}&s=40`,
+    thumbnail: `${this.avatarUrl}&s=96`,
     full: this.avatarUrl,
   };
 });

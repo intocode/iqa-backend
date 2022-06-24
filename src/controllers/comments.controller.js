@@ -1,44 +1,38 @@
 const Comment = require('../models/Comment.model');
 const Question = require('../models/Question.model');
+const { getComments, addNewComment } = require('../services/comments.service');
+const ApiError = require('../utils/ApiError.class');
+const { catchError } = require('../utils/catchError');
 
-module.exports.commentsController = {
-  addCommentToPost: async (req, res) => {
-    try {
-      const { id } = req.params;
+const getCommentsByQuestionIdController = catchError(async (req, res) => {
+  const { questionId } = req.params;
 
-      const question = await Question.findById(id);
+  const comments = await getComments({ questionId });
 
-      if (!question) {
-        return res.status(400).json({ error: 'такого вопроса не существует' });
-      }
+  return res.json({
+    items: comments,
+  });
+});
 
-      const createdComment = await Comment.create({
-        text: req.body.text,
-        author: req.user.userId,
-        questionId: id,
-      });
+const addNewCommentController = catchError(async (req, res) => {
+  const { questionId } = req.params;
+  const { text } = req.body;
 
-      const comment = await Comment.findById(createdComment._id).populate(
-        'author',
-        { id: 1, name: 1, avatarUrl: 1 }
-      );
+  const question = await Question.findOne({ _id: questionId, deleted: false });
 
-      return res.json(comment);
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
-  getCommentsByQuestionId: async (req, res) => {
-    try {
-      const { id } = req.params;
+  if (!question) {
+    throw new ApiError('Вопроса с таким ID не существует', 400);
+  }
 
-      const comments = await Comment.find({
-        questionId: id,
-      }).populate('author', { id: 1, name: 1, avatarUrl: 1 });
+  const createdComment = await addNewComment({ questionId, author: req.user.userId, text });
 
-      return res.json(comments);
-    } catch (e) {
-      return res.status(400).json({ error: e.toString() });
-    }
-  },
-};
+  const populatedComment = await Comment.findById(createdComment._id).populate('author', {
+    id: 1,
+    name: 1,
+    avatarUrl: 1,
+  });
+
+  return res.json(populatedComment);
+});
+
+module.exports = { getCommentsByQuestionIdController, addNewCommentController };
