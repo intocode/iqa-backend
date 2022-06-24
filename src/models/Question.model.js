@@ -11,6 +11,7 @@ const questionSchema = Schema(
     // полное описание вопроса
     fullDescription: {
       type: String,
+      required: true,
     },
 
     // массив из тегов

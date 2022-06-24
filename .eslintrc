@@ -5,21 +5,18 @@
     "es6": true,
     "jest": true
   },
-  "extends": [
-    "plugin:promise/recommended",
-    "plugin:node/recommended",
-    "airbnb/base",
-    "prettier"
-  ],
+  "extends": ["plugin:promise/recommended", "plugin:node/recommended", "airbnb/base", "prettier"],
   "plugins": ["jest"],
   "rules": {
     "no-underscore-dangle": "off"
   },
-  "overrides": [{
-    "files": "**/tests/**",
-    "rules": {
+  "overrides": [
+    {
+      "files": "**/tests/**",
+      "rules": {
         "node/no-unpublished-require": 0,
         "node/no-missing-require": 0
+      }
     }
-  }]
+  ]
 }

@@ -2,11 +2,11 @@ const { Types } = require('mongoose');
 const Question = require('../models/Question.model');
 
 const addQuestion = async (options) => {
-  const { question, comment, tags, author } = options;
+  const { question, fullDescription, tags, author } = options;
 
   const createdQuestion = await Question.create({
     question,
-    comment,
+    fullDescription,
     tags,
     author,
   });
@@ -43,8 +43,7 @@ const getQuestions = async (filter = {}, options = {}) => {
     extendedFilter._id = Types.ObjectId(filter._id);
   }
 
-  const totalQuestionsAfterAggregateWithoutLimit =
-    await Question.countDocuments(extendedFilter);
+  const totalQuestionsAfterAggregateWithoutLimit = await Question.countDocuments(extendedFilter);
 
   const questions = await Question.aggregate([
     { $match: { ...extendedFilter } },

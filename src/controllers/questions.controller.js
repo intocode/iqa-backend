@@ -40,9 +40,7 @@ const getQuestionsController = catchError(async (req, res) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      throw new Error(
-        'Для использования флага favoritesOnly нужно быть авторизованным'
-      );
+      throw new Error('Для использования флага favoritesOnly нужно быть авторизованным');
     }
 
     options.user = await getAuthInfo(authorization);
@@ -62,12 +60,12 @@ const getQuestionsController = catchError(async (req, res) => {
 });
 
 const addQuestionController = catchError(async (req, res) => {
-  const { question, comment, tags } = req.body;
+  const { question, fullDescription, tags } = req.body;
   const author = req.user.userId;
 
   const createdQuestion = await addQuestion({
     question,
-    comment,
+    fullDescription,
     tags,
     author,
   });

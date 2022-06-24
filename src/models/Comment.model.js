@@ -25,7 +25,7 @@ const commentSchema = Schema(
 
 commentSchema.pre('save', async function updateCommentsCounter(next) {
   await Question.findByIdAndUpdate(this.questionId.toString(), {
-    $inc: { commentsCount: +1 },
+    $inc: { commentsCount: 1 },
   });
   next();
 });
