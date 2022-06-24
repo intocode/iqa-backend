@@ -6,6 +6,8 @@ env:
   GH_CLIENT_SECRET: ${{ secrets.GH_CLIENT_SECRET }}
   JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
   JWT_EXPIRES_IN: 7d
+  QUESTIONS_PER_PAGE: 5
+  MAX_QUESTIONS_PER_PAGE: 20
 
 on:
   push:
