@@ -64,6 +64,7 @@ const getQuestions = async (filter = {}, options = {}) => {
 };
 
 const getQuestion = async (filter = {}, options = {}) => {
+  await Question.findByIdAndUpdate(filter._id, { $inc: { views: 1 } });
   const questions = await getQuestions(filter, options);
 
   return questions.items[0];

@@ -43,6 +43,12 @@ const questionSchema = Schema(
         ref: 'User',
       },
     ],
+
+    // количество просмотров
+    views: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
