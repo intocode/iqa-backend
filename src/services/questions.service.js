@@ -87,6 +87,9 @@ const getQuestions = async (filter = {}, options = {}) => {
         preserveNullAndEmptyArrays: true,
       },
     },
+    {
+      $unwind: '$lastComment.author',
+    },
   ]);
 
   const authorPopulatedQuestions = await Question.populate(questions, {
