@@ -50,6 +50,43 @@ const getQuestions = async (filter = {}, options = {}) => {
     { $sort: { createdAt: -1 } },
     { $skip: offset },
     { $limit: limit },
+    {
+      $lookup: {
+        from: 'comments',
+        localField: '_id',
+        foreignField: 'questionId',
+        pipeline: [
+          { $sort: { createdAt: -1 } },
+          { $limit: 1 },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'author',
+              foreignField: '_id',
+              // ниже имитация виртуального поля avatar, т.к. mongoose не поддерживает
+              // добавление виртуальных полей при использовании aggregate
+              pipeline: [
+                {
+                  $addFields: {
+                    'avatar.thumbnail': { $concat: ['$avatarUrl', '&s=96'] },
+                    'avatar.full': '$avatarUrl',
+                  },
+                },
+                { $project: { avatarUrl: 1, name: 1, avatar: 1 } },
+              ],
+              as: 'author',
+            },
+          },
+        ],
+        as: 'lastComment',
+      },
+    },
+    {
+      $unwind: {
+        path: '$lastComment',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
   ]);
 
   const authorPopulatedQuestions = await Question.populate(questions, {
