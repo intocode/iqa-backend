@@ -1,8 +1,9 @@
 const Comment = require('../models/Comment.model');
 const Question = require('../models/Question.model');
-const { getComments, addNewComment } = require('../services/comments.service');
+const { getComments, addNewComment, deleteCommentById } = require('../services/comments.service');
 const ApiError = require('../utils/ApiError.class');
 const { catchError } = require('../utils/catchError');
+const User = require('../models/User.model');
 
 const getCommentsByQuestionIdController = catchError(async (req, res) => {
   const { questionId } = req.params;
@@ -35,4 +36,28 @@ const addNewCommentController = catchError(async (req, res) => {
   return res.json(populatedComment);
 });
 
-module.exports = { getCommentsByQuestionIdController, addNewCommentController };
+const deleteCommentController = catchError(async (req, res) => {
+  // ID удаляемого комментария
+  const { id } = req.params;
+
+  // ID текущего юзера
+  const { userId } = req.user;
+
+  // Нужно проверить есть права у текущего пользователя
+  const user = await User.findById(userId);
+
+  if (user.isAdmin) {
+    await deleteCommentById(id);
+
+    return res.json({ message: 'Комментарий удален' });
+  }
+
+  // если не удалось удалить
+  throw new ApiError('У вас недостаточно прав для удаления', 403);
+});
+
+module.exports = {
+  getCommentsByQuestionIdController,
+  addNewCommentController,
+  deleteCommentController,
+};

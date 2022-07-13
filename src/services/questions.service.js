@@ -90,7 +90,7 @@ const getQuestions = async (filter = {}, options = {}) => {
     {
       $unwind: {
         path: '$lastComment.author',
-        preserveNullAndEmptyArrays: true
+        preserveNullAndEmptyArrays: true,
       },
     },
   ]);

@@ -16,4 +16,6 @@ const addNewComment = async ({ questionId, text, author }) => {
   return createdComment;
 };
 
-module.exports = { getComments, addNewComment };
+const deleteCommentById = (commentId) => Comment.findByIdAndDelete(commentId);
+
+module.exports = { getComments, addNewComment, deleteCommentById };
