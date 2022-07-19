@@ -7,6 +7,18 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    login: {
+      type: String,
+      required: true,
+    },
+    githubBio: {
+      type: String,
+      required: true,
+    },
+    company: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
