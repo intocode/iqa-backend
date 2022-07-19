@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
 const { catchError } = require('../utils/catchError');
+const { log } = require('nodemon/lib/utils');
 
 const { JWT_SECRET_KEY, JWT_EXPIRES_IN } = process.env;
 
@@ -12,13 +13,16 @@ module.exports.usersController = {
 
       if (!candidate) {
         candidate = await User.create({
-          name: req.user.username,
+          name: req.user.name,
+          login: req.user.login,
+          company: req.user.company,
+          githubBio: req.user.bio,
           githubId: req.user.id,
           avatarUrl: req.user._json.avatar_url,
           email: req.user.emails[0].value,
         });
       }
-
+      console.log(req.user);
       const token = jwt.sign(
         {
           userId: candidate._id,
