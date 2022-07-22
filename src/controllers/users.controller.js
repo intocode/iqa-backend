@@ -13,6 +13,9 @@ module.exports.usersController = {
       if (!candidate) {
         candidate = await User.create({
           name: req.user.username,
+          fullName: req.user._json.name,
+          company: req.user._json.company,
+          githubBio: req.user._json.bio,
           githubId: req.user.id,
           avatarUrl: req.user._json.avatar_url,
           email: req.user.emails[0].value,
