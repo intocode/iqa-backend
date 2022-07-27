@@ -4,7 +4,7 @@ const {
   getComments,
   addNewComment,
   deleteCommentById,
-  dicrementCommentsCount,
+  decrementCommentsCount,
 } = require('../services/comments.service');
 const ApiError = require('../utils/ApiError.class');
 const { catchError } = require('../utils/catchError');
@@ -53,7 +53,7 @@ const deleteCommentController = catchError(async (req, res) => {
 
   if (user.isAdmin) {
     await deleteCommentById(id);
-    await dicrementCommentsCount(questionId);
+    await decrementCommentsCount(questionId);
 
     return res.json({ message: 'Комментарий удален' });
   }

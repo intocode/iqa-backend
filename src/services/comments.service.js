@@ -18,7 +18,7 @@ const addNewComment = async ({ questionId, text, author }) => {
 };
 
 const deleteCommentById = (commentId) => Comment.findByIdAndDelete(commentId);
-const dicrementCommentsCount = (questionId) =>
+const decrementCommentsCount = (questionId) =>
   Question.findByIdAndUpdate(questionId, { $inc: { commentsCount: -1 } });
 
-module.exports = { getComments, addNewComment, deleteCommentById, dicrementCommentsCount };
+module.exports = { getComments, addNewComment, deleteCommentById, decrementCommentsCount };
