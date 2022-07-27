@@ -1,4 +1,5 @@
 const Comment = require('../models/Comment.model');
+const Question = require('../models/Question.model');
 
 const getComments = async (filter) => {
   const comments = await Comment.find(filter).populate('author', { id: 1, name: 1, avatarUrl: 1 });
@@ -17,5 +18,7 @@ const addNewComment = async ({ questionId, text, author }) => {
 };
 
 const deleteCommentById = (commentId) => Comment.findByIdAndDelete(commentId);
+const dicrementCommentsCount = (questionId) =>
+  Question.findByIdAndUpdate(questionId, { $inc: { commentsCount: -1 } });
 
-module.exports = { getComments, addNewComment, deleteCommentById };
+module.exports = { getComments, addNewComment, deleteCommentById, dicrementCommentsCount };
