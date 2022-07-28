@@ -1,6 +1,11 @@
 const Comment = require('../models/Comment.model');
 const Question = require('../models/Question.model');
-const { getComments, addNewComment, deleteCommentById } = require('../services/comments.service');
+const {
+  getComments,
+  addNewComment,
+  deleteCommentById,
+  decrementCommentsCount,
+} = require('../services/comments.service');
 const ApiError = require('../utils/ApiError.class');
 const { catchError } = require('../utils/catchError');
 const User = require('../models/User.model');
@@ -38,7 +43,7 @@ const addNewCommentController = catchError(async (req, res) => {
 
 const deleteCommentController = catchError(async (req, res) => {
   // ID удаляемого комментария
-  const { id } = req.params;
+  const { questionId, id } = req.params;
 
   // ID текущего юзера
   const { userId } = req.user;
@@ -48,6 +53,7 @@ const deleteCommentController = catchError(async (req, res) => {
 
   if (user.isAdmin) {
     await deleteCommentById(id);
+    await decrementCommentsCount(questionId);
 
     return res.json({ message: 'Комментарий удален' });
   }
