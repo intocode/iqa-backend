@@ -19,6 +19,11 @@ const commentSchema = Schema(
       ref: 'Question',
       required: true,
     },
+
+    likes: {
+      type: Array,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
