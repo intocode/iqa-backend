@@ -20,10 +20,12 @@ const commentSchema = Schema(
       required: true,
     },
 
-    likes: {
-      type: Array,
-      default: 0,
-    },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { timestamps: true }
 );
