@@ -1,6 +1,6 @@
 const Comment = require('../models/Comment.model');
 
-const addLike = async ({ commentId, userId }) => {
+const likedComment = async ({ commentId, userId }) => {
   const addALike = await Comment.findByIdAndUpdate(
     commentId,
     { $addToSet: { likes: userId } },
@@ -10,7 +10,7 @@ const addLike = async ({ commentId, userId }) => {
   return addALike;
 };
 
-const removeLikeById = async ({ commentId, userId }) => {
+const unlikedComment = async ({ commentId, userId }) => {
   const removeLike = await Comment.findByIdAndUpdate(
     commentId,
     { $pull: { likes: userId } },
@@ -20,4 +20,4 @@ const removeLikeById = async ({ commentId, userId }) => {
   return removeLike;
 };
 
-module.exports = { addLike, removeLikeById };
+module.exports = { likedComment, unlikedComment };
