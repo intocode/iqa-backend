@@ -4,7 +4,7 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router({ mergeParams: true });
 
-router.post('/:id', authMiddleware, addLikeController);
-router.delete('/:id', authMiddleware, removeLikeController);
+router.post('/', authMiddleware, addLikeController);
+router.delete('/', authMiddleware, removeLikeController);
 
 module.exports = router;
