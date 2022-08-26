@@ -1,23 +1,23 @@
 const Comment = require('../models/Comment.model');
 
-const likedComment = async ({ commentId, userId }) => {
-  const addALike = await Comment.findByIdAndUpdate(
+const addLikeComment = async ({ commentId, userId }) => {
+  const likedComment = await Comment.findByIdAndUpdate(
     commentId,
     { $addToSet: { likes: userId } },
     { new: true }
   );
 
-  return addALike;
+  return likedComment;
 };
 
-const unlikedComment = async ({ commentId, userId }) => {
-  const removeLike = await Comment.findByIdAndUpdate(
+const unlikeComment = async ({ commentId, userId }) => {
+  const unlikedComment = await Comment.findByIdAndUpdate(
     commentId,
     { $pull: { likes: userId } },
     { new: true }
   );
 
-  return removeLike;
+  return unlikedComment;
 };
 
-module.exports = { likedComment, unlikedComment };
+module.exports = { addLikeComment, unlikeComment };
