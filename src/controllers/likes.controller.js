@@ -5,6 +5,7 @@ const { catchError } = require('../utils/catchError');
 const addLikeController = catchError(async (req, res) => {
   // ID комментария, где ставится лайк
   const { commentId } = req.params;
+
   // ID пользователя, который ставит лайк
   const { userId } = req.user;
 
@@ -25,7 +26,7 @@ const unlikeController = catchError(async (req, res) => {
 
   const unlikedComment = await unlikeComment({ commentId, userId });
 
-  const populatedComment = getComments({ _id: unlikedComment._id });
+  const populatedComment = await getComments({ _id: unlikedComment._id });
 
   // возвращаем объект комментария, чтоб было легче обновить его состояние на фронте
   return res.json(populatedComment);
