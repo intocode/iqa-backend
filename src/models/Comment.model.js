@@ -19,6 +19,13 @@ const commentSchema = Schema(
       ref: 'Question',
       required: true,
     },
+
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   { timestamps: true }
 );
