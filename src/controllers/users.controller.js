@@ -90,4 +90,20 @@ module.exports.usersController = {
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
+
+  patchUserFullName: async (req, res) => {
+    try {
+      const fullName = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          fullName: req.body.fullName,
+          email: req.body.email,
+        },
+        { new: true }
+      );
+      res.json(fullName);
+    } catch (e) {
+      res.status(400).json({ error: e.toString() });
+    }
+  },
 };
