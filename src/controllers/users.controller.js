@@ -91,18 +91,26 @@ module.exports.usersController = {
     res.json(`hello ${req.user.name}`);
   },
 
-  patchUserFullNameAndEmail: async (req, res) => {
+  updateProfile: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id)
-      const patchUserData = await User.findByIdAndUpdate(
+      const acceptFields = ['fullName', 'email'];
+      const updateObject = {};
+
+      await Object.keys(req.body).forEach((key) => {
+        if (acceptFields.includes(key)) {
+          if (req.body[key]) {
+            updateObject[key] = req.body[key];
+          }
+        }
+      });
+      const userPatch = await User.findByIdAndUpdate(
         req.params.id,
         {
-          fullName: req.body.fullName || user.fullName,
-          email: req.body.email || user.email,
+          ...updateObject,
         },
         { new: true }
       );
-      res.json(patchUserData);
+      res.json(userPatch);
     } catch (e) {
       res.status(400).json({ error: e.toString() });
     }
