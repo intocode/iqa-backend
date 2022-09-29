@@ -90,4 +90,24 @@ module.exports.usersController = {
   userCheck: async (req, res) => {
     res.json(`hello ${req.user.name}`);
   },
+
+  updateProfile: async (req, res) => {
+    try {
+      const acceptFields = ['fullName', 'email'];
+      const updateObject = Object.keys(req.body).reduce((accum, key) => {
+        if (acceptFields.includes(key)) {
+          if (req.body[key]) {
+            // eslint-disable-next-line no-param-reassign
+            accum[key] = req.body[key];
+          }
+        }
+        return accum;
+      }, {});
+
+      const userPatch = await User.findByIdAndUpdate(req.params.id, updateObject, { new: true });
+      res.json(userPatch);
+    } catch (e) {
+      res.status(400).json({ error: e.toString() });
+    }
+  },
 };
