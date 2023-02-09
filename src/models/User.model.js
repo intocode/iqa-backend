@@ -13,7 +13,6 @@ const userSchema = mongoose.Schema(
     },
     company: {
       type: String,
-      required: true,
     },
     fullName: {
       type: String,
@@ -21,7 +20,6 @@ const userSchema = mongoose.Schema(
     },
     githubBio: {
       type: String,
-      required: true,
     },
     githubId: {
       type: String,
